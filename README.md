@@ -11,6 +11,18 @@ Wedding planning can be a huge and daunting task with many variables, and most b
 
 ### R3 Why have you chosen this database system. What are the drawbacks compared to others?
 
+PostgreSQL is a widely-adopted object-relational DBMS that I chose due to it's many advantages. Firstly it is open source and free to use, which keeps the initial cost small (if any). As a beginner in the field, it has a lower learning curve compared to some other database systems. In addition, as mentioned above, it is widely used in the industry and is supported by a large community with extensive forum discussions and documentation, hence there is help readily available if there are any issues. 
+
+Despite being free to use, PostgreSQL is very feature-rich. It is highly extensible, which means new functions, data types, etc, can be added. There is a wide range of libraries and tools available for developers and is supported across all the common platforms including MacOS, Linux, and Windows (PostgreSQL, 2020). It is very scalable, and used with relational databases that can store large datasets in tables, utilising transactional Data Definition Language to easily implement mdifications to the database with minimal disruption to the framework. Although my application won't have a big database for this assignment, there is the potential to grow. It is also helpful to have the data in a rigid schema for ease of access and also to establish clear relationships between each entity.
+
+PostgreSQL is ACID compliant, which stands for atomicity, consistency, isolation and durability. Atomacity refers to how every operation has to succeed for the transaction to succeed, avoiding unintential results from partial transactions. Consistency is sticking to the database constraints and isolation means transactions, even if happening at the same time, won't interfere with one another. Finally, durability refers to an up to date database once a transaction happens (MongoDB, 2023). This ensures a reliable database for my app that supports multiple users and high transactional loads if needed.
+
+Last but not least, PostgreSQL is secure, so our users' details are better protected, user accounts can be authenticated and also set up with varying permission at handling the data.
+
+Some of the drawbacks include some open source apps support MySQL but not PostgreSQL, and PostgreSQL also has slower performance metrics than MySQL (Dhruv, 2019) as it starts from the first row of a table in a relationship database and reads it sequentially. However these aren't as important as PostgreSQL being better at executing complex queries for this application, and that it's free to use. MySQL is also only ACID compliant in certain conditions. 
+
+One could argue that PostgreSQL is also less flexible, compared to say MongoDB, in the sense that a table in a relational database cannot have extra fields outside of the set schema. However this is unlikely to be an issue with the limited entities that we have in this application.
+
 ### R4 Identify and discuss the key functionalities and benefits of an ORM
 
 ### R5 Document all endpoints for your API
@@ -33,11 +45,21 @@ I initially brainstormed ideas for a project on paper, and chose the most practi
 
 I also formed a rough idea of the entities and relationships during this, which acted as the basis for my ERD.
 
-I am utilising Trello to help me track tasks throughout this project, with lists based on a Kanban board template, including:
-
 * User Stories
 
-This is where I started to think about the end goals of the application. I created several user stories from the point of view of the user, which is the bride/groom/wedding planner in this case. These will help with the planning stage of the application and ensure I start with the end in mind.
+This is where I started to think about the end goals of the application, from the point of view of the end user to improve customer satisfaction. I created several user stories from the point of view of the user, which is the bride/groom/wedding planner in this case. These will help with the planning stage of the application and ensure I start with the end in mind. My user stories were as follows:
+
+1. As a bride/groom/wedding planner, I want to be able to create a user profile with ease and have my information secure.
+
+2. As a bride/groom/wedding planner, I want to be able to create, read, update or delete a wedding event. I don't want other general users to be able to modify this information.
+
+3. As an admin of the app, I want to have be able to perform CRUD on all models.
+
+4. As a bride/groom/wedding planner, I want to be able to add/modify/delete guests and their information, such as contact details and whether or not they have RSVP'ed.
+
+5. As a bride/groom/wedding planner, I want to be able to create, read, update or delete potential venues and it's information, like address, contact details, and costs.
+
+I am utilising Trello to help me track tasks throughout this project, with lists based on a Kanban board template, including:
 
 * Backlog
 
@@ -54,3 +76,14 @@ These are the tasks that I have completed but yet to finalise. For example my ER
 * Done
 
 These are tasks that I have completed and no longer need to revisit.
+
+The Trello board allows me to grasp the big picture of the progress of my assignment quickly.
+
+### References
+
+* PostgreSQL Documentation. (2020). 1. What Is PostgreSQL? [online] Available at: https://www.postgresql.org/docs/current/intro-whatis.html.
+
+* MongoDB. (2023). What Does ACID Compliance Mean? | An Introduction. [online] Available at: https://www.mongodb.com/databases/acid-compliance#:~:text=Well%2C%20ACID%20stands%20for%20atomicity.
+
+* Dhruv, S. (2019). Pros and Cons of using PostgreSQL for Application Development. [online] Aalpha. Available at: https://www.aalpha.net/blog/pros-and-cons-of-using-postgresql-for-application-development/.
+
