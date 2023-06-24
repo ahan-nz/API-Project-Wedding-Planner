@@ -1,6 +1,16 @@
 # T2A2 - API Webserver Project
 ## By Alicia Han
 ---
+
+### Installation Instructions
+
+psql postgres
+create database wedding_planner;
+\c wedding_planner
+create user planner_dev with password 'wedding123';
+grant all privileges on database wedding_planner to planner_dev;
+
+
 ### R1 Identify the problem you are trying to solve with this app
 
 The purpose of this app is to simplify and organise the task of wedding planning. The aim is make this often stressful task a better experience by giving brides and grooms a starting point on brainstorming and planning for their big day, and having the details all in one place; the app can also be used by professional wedding planners to track vendors for their clients. For the purposes of this assignment the scope has been limited, however there is potential to scale and add more features such as catering or florists.

@@ -44,13 +44,74 @@ def seed_db():
 
     states = [
         State(
-            name='Victoria',
+            name='Victoria'
         ),
         State(
-            name='Queensland',
+            name='Queensland'
         ),
         State(
             name='Tasmania'
+        )
+    ]
+
+    guests = [
+        Guest(
+            f_name='John',
+            l_name='Smith',
+            phone = '0400100200',
+            email='john@johnsmith.com',
+            is_rsvp=True
+        ),
+        Guest(
+            f_name='Margaret',
+            l_name='Connolly',
+            phone = '0400100100',
+            email='margaret@hello.com'
+        ),
+        Guest(
+            f_name='Richard',
+            l_name='Han',
+            phone = '0400100201',
+            email='richardhan@sample.com'
+        ),
+        Guest(
+            f_name='Eddy',
+            l_name='Chan',
+            phone = '0434387110',
+            email='beans@shibainu.com',
+            is_rsvp=True
+        )
+    ]
+
+    venues = [
+        Venue(
+            name='Bundaleer Rainforest Gardens',
+            street_number='59',
+            street_name='Bundaleer St',
+            phone='0733741360',
+            email='hello@bundaleer.com',
+            cost_per_head='190',
+            min_guests='80',
+            max_guests='200'
+        ),
+        Venue(
+            name='Dalywaters Roses Garden and Chapel',
+            street_number='240',
+            street_name='Bungower Rd',
+            phone='0425608264',
+            email='hello@dalywaters.com',
+            cost_per_head='220',
+            min_guests='50',
+            max_guests='150'
+        )
+    ]
+
+    weddings = [
+        Wedding(
+            date='2023-11-30'
+        ),
+        Wedding(
+            date='2024-05-12'
         )
     ]
 
