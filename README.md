@@ -25,6 +25,15 @@ One could argue that PostgreSQL is also less flexible, compared to say MongoDB, 
 
 ### R4 Identify and discuss the key functionalities and benefits of an ORM
 
+Object relational mapper
+Relational databases typically uses a querying language called SQL to manipulate the structure and data in our database. With ORM, the SQL is generated for us behind the scenes.
+
+Benefits:
+* Works with Python objects in this case, we don't have to write SQL
+* Allows you to switch your database easily
+* You can control the structure of your database from your code, which can be managed by a revision control system like Git or Subversion.
+* Supports multiple database platforms e.g. if you're selling your API code for distribution in on-premises soluions.
+
 ### R5 Document all endpoints for your API
 
 ### R6 ERD
