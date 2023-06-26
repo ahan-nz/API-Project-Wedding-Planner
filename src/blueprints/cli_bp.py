@@ -31,6 +31,10 @@ def seed_db():
         )
     ]
 
+    db.session.query(User).delete()
+    db.session.add_all(users)
+    db.session.commit()
+
     cities = [
         City(
             name='Mornington',
@@ -41,6 +45,10 @@ def seed_db():
             postcode='4069'
         )
     ]
+
+    db.session.query(City).delete()
+    db.session.add_all(cities)
+    db.session.commit()
 
     states = [
         State(
@@ -53,6 +61,10 @@ def seed_db():
             name='Tasmania'
         )
     ]
+
+    db.session.query(State).delete()
+    db.session.add_all(states)
+    db.session.commit()
 
     guests = [
         Guest(
@@ -83,6 +95,10 @@ def seed_db():
         )
     ]
 
+    db.session.query(Guest).delete()
+    db.session.add_all(guests)
+    db.session.commit()
+
     venues = [
         Venue(
             name='Bundaleer Rainforest Gardens',
@@ -106,6 +122,10 @@ def seed_db():
         )
     ]
 
+    db.session.query(Venue).delete()
+    db.session.add_all(venues)
+    db.session.commit()
+
     weddings = [
         Wedding(
             date='2023-11-30'
@@ -115,7 +135,8 @@ def seed_db():
         )
     ]
 
-    db.session.add_all()
+    db.session.query(Wedding).delete()
+    db.session.add_all(weddings)
     db.session.commit()
 
     print("Models seeded")
