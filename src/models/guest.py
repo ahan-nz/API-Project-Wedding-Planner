@@ -1,4 +1,5 @@
 from init import db, ma
+# from marshmallow import fields
 
 class Guest(db.Model):
     __tablename__ = 'guests'
@@ -9,3 +10,7 @@ class Guest(db.Model):
     phone = db.Column(db.Integer)
     email = db.Column(db.String)
     is_rsvp = db.Column(db.Boolean, default=False)
+
+class CitySchema(ma.Schema):
+    class Meta:
+        fields = ('id', 'f_name', 'l_name', 'phone', 'email', 'is_rsvp')

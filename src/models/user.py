@@ -1,4 +1,5 @@
 from init import db, ma
+# from marshmallow import fields
 
 class User(db.Model):
     __tablename__ = 'users'
@@ -9,3 +10,7 @@ class User(db.Model):
     email = db.Column(db.String, nullable=False, unique=True)
     password = db.Column(db.String(30), nullable=False)
     is_admin = db.Column(db.Boolean, default=False)
+
+class CitySchema(ma.Schema):
+    class Meta:
+        fields = ('id', 'f_name', 'l_name', 'email', 'password', 'is_admin')
