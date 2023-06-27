@@ -7,6 +7,6 @@ class State(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(20))
 
-class CitySchema(ma.Schema):
+class StateSchema(ma.Schema):
     class Meta:
         fields = ('id', 'name')

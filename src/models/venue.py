@@ -16,6 +16,6 @@ class Venue(db.Model):
     max_guests = db.Column(db.Integer)
     is_available = db.Column(db.Boolean, default=True)
 
-class CitySchema(ma.Schema):
+class VenueSchema(ma.Schema):
     class Meta:
         fields = ('id', 'name', 'street_number', 'street_name', 'phone', 'email', 'description', 'cost_per_head', 'min_guests', 'max_guests', 'is_available')

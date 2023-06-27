@@ -11,6 +11,6 @@ class Guest(db.Model):
     email = db.Column(db.String)
     is_rsvp = db.Column(db.Boolean, default=False)
 
-class CitySchema(ma.Schema):
+class GuestSchema(ma.Schema):
     class Meta:
         fields = ('id', 'f_name', 'l_name', 'phone', 'email', 'is_rsvp')
