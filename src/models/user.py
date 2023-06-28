@@ -11,6 +11,7 @@ class User(db.Model):
     password = db.Column(db.String(30), nullable=False)
     is_admin = db.Column(db.Boolean, default=False)
 
+
 class UserSchema(ma.Schema):
     class Meta:
         fields = ('id', 'f_name', 'l_name', 'email', 'password', 'is_admin')

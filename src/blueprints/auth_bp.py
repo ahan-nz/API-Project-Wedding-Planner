@@ -12,6 +12,7 @@ def admin_required():
   if not (user and user.is_admin):
     abort(401, description="You must be an admin")
 
+
 auth_bp = Blueprint('auth', __name__)
 
 # Get all users
@@ -22,6 +23,7 @@ def all_users():
     stmt = db.select(User)
     users = db.session.scalars(stmt)
     return UserSchema(many=True, exclude=['password']).dump(users)
+
 
 # Register a user
 @auth_bp.route('/register', methods=['POST'])
@@ -41,6 +43,7 @@ def register():
         return UserSchema(exclude=['password']).dump(user), 201
     except IntegrityError:
         return {'error': 'Email address already in use'}, 409
+    
     
 # Login as a user    
 @auth_bp.route('/login', methods=['POST'])

@@ -15,6 +15,7 @@ def create_db():
     db.create_all()
     print("Tables created successfully")
 
+
 @cli_bp.cli.command("seed")
 def seed_db():
     users = [

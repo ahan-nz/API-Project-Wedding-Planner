@@ -5,6 +5,7 @@ from flask_jwt_extended import jwt_required
 
 weddings_bp = Blueprint('weddings', __name__, url_prefix='/weddings')
 
+
 # Get all weddings
 @weddings_bp.route('/')
 # @ jwt required
@@ -13,6 +14,7 @@ def all_weddings():
     stmt = db.select(Wedding)
     weddings = db.session.scalars(stmt).all()
     return WeddingSchema(many=True).dump(weddings)
+
 
 # Get one wedding
 @weddings_bp.route('/<int:wedding_id>')
@@ -26,6 +28,7 @@ def one_wedding(wedding_id):
     else:
         return {'error': 'Wedding entry not found'}, 404
     
+
 # Create a new wedding
 @weddings_bp.route('/', methods='POST')
 # @ jwt required
@@ -41,6 +44,7 @@ def create_wedding():
 
     return WeddingSchema().dump(wedding), 201
 
+
 # Update a wedding
 @weddings_bp.route('/<int:wedding_id>', methods=['PUT', 'PATCH'])
 # @ jwt required
@@ -55,6 +59,7 @@ def update_wedding(wedding_id):
         return WeddingSchema().dump(wedding)
     else:
        return {'error': 'Wedding entry not found'}, 404
+
 
 # Delete a wedding
 @weddings_bp.route('/<int:wedding_id>', methods=['DELETE'])

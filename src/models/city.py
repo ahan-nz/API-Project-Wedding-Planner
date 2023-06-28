@@ -8,6 +8,7 @@ class City(db.Model):
     name = db.Column(db.String(100))
     postcode = db.Column(db.Integer, nullable=False)
 
+
 class CitySchema(ma.Schema):
     class Meta:
         fields = ('id', 'name', 'postcode')
