@@ -31,7 +31,7 @@ def one_wedding(wedding_id):
     
 
 # Create a new wedding
-@weddings_bp.route('/', methods='POST')
+@weddings_bp.route('/', methods=['POST'])
 # @ jwt required
 def create_wedding():
     wedding_info = WeddingSchema().load(request.json)

@@ -8,7 +8,7 @@ class User(db.Model):
     f_name = db.Column(db.String(50), nullable=False)
     l_name = db.Column(db.String(50), nullable=False)
     email = db.Column(db.String, nullable=False, unique=True)
-    password = db.Column(db.String(30), nullable=False)
+    password = db.Column(db.String, nullable=False)
     is_admin = db.Column(db.Boolean, default=False)
 
     wedding = db.relationship('Wedding', back_populates='user', cascade='all, delete')

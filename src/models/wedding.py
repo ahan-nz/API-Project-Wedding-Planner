@@ -13,10 +13,7 @@ class Wedding(db.Model):
 
 class WeddingSchema(ma.Schema):
     user = fields.Nested('UserSchema', only=['f_name', 'l_name'])
+    date_of_wedding = fields.Date(load_default='')
 
     class Meta:
         fields = ('id', 'date_of_wedding', 'user')
-
-
-
-
