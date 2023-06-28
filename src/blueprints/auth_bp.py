@@ -2,7 +2,7 @@ from flask import Blueprint, request, abort
 from models.user import User, UserSchema
 from init import db, bcrypt
 from sqlalchemy.exc import IntegrityError
-from flask_jwt_extended import create_access_token, get_jwt_identity
+from flask_jwt_extended import create_access_token, get_jwt_identity, jwt_required
 from datetime import timedelta
 
 def admin_required():
@@ -25,9 +25,9 @@ auth_bp = Blueprint('auth', __name__)
 
 # Get all users
 @auth_bp.route('/users')
-# @ jet required
+@jwt_required()
 def all_users():
-    # @ admin required
+    admin_required()
     stmt = db.select(User)
     users = db.session.scalars(stmt)
     return UserSchema(many=True, exclude=['password']).dump(users)
@@ -42,7 +42,8 @@ def register():
         user = User(
             email=user_info['email'],
             password=bcrypt.generate_password_hash(user_info['password']).decode('utf-8'),
-            name=user_info['name']
+            f_name=user_info['f_name'],
+            l_name=user_info['l_name']
         )
 
         db.session.add(user)
@@ -66,3 +67,18 @@ def login():
             return {'error': 'Invalid email address or password'}, 401
     except KeyError:
         return {'error': 'Email and password are required'}, 400
+    
+
+# Delete a user
+@auth_bp.route('/users/<int:user_id>', methods=['DELETE'])
+@jwt_required()
+def delete_user(user_id):
+    stmt = db.select(User).filter_by(id=user_id)
+    user = db.session.scalar(stmt)
+    if user:
+       admin_or_owner_required(user.id)
+       db.session.delete(user)
+       db.session.commit()
+       return{}, 200
+    else:
+       return {'error': 'User not found'}, 404

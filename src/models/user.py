@@ -15,7 +15,10 @@ class User(db.Model):
 
 
 class UserSchema(ma.Schema):
-    wedding = fields.Nested('WeddingSchema', exclude=['user', 'id'])
+    # f_name = fields.String(Required=True)
+    # l_name = fields.String(Required=True)
+    # email = fields.String(Required=True)
+    # password = fields.String(Required=True)
 
     class Meta:
-        fields = ('id', 'f_name', 'l_name', 'email', 'password', 'is_admin', 'wedding')
+        fields = ('id', 'f_name', 'l_name', 'email', 'password', 'is_admin')

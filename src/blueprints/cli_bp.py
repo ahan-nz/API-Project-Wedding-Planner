@@ -31,7 +31,7 @@ def seed_db():
             l_name='Smith',
             email='hello@sallysmith.com',
             password=bcrypt.generate_password_hash('weddingcake').decode('utf-8'),
-            is_admin=True
+            is_admin=False
         )
     ]
 
