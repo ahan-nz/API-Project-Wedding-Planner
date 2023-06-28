@@ -39,21 +39,6 @@ def seed_db():
     db.session.add_all(users)
     db.session.commit()
 
-    cities = [
-        City(
-            name='Mornington',
-            postcode='3931'
-        ),
-        City(
-            name='Brookfield',
-            postcode='4069'
-        )
-    ]
-
-    db.session.query(City).delete()
-    db.session.add_all(cities)
-    db.session.commit()
-
     states = [
         State(
             name='Victoria'
@@ -69,6 +54,22 @@ def seed_db():
     db.session.query(State).delete()
     db.session.add_all(states)
     db.session.commit()
+
+    cities = [
+        City(
+            name='Mornington',
+            postcode='3931'
+        ),
+        City(
+            name='Brookfield',
+            postcode='4069'
+        )
+    ]
+
+    db.session.query(City).delete()
+    db.session.add_all(cities)
+    db.session.commit()
+
 
     guests = [
         Guest(
@@ -132,10 +133,12 @@ def seed_db():
 
     weddings = [
         Wedding(
-            date='2023-11-30'
+            date_of_wedding='2023-11-30',
+            user_id=users[0].id
         ),
         Wedding(
-            date='2024-05-12'
+            date_of_wedding='2024-05-12',
+            user_id=users[1].id
         )
     ]
 

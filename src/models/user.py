@@ -1,5 +1,5 @@
 from init import db, ma
-# from marshmallow import fields
+from marshmallow import fields
 
 class User(db.Model):
     __tablename__ = 'users'
@@ -11,7 +11,11 @@ class User(db.Model):
     password = db.Column(db.String(30), nullable=False)
     is_admin = db.Column(db.Boolean, default=False)
 
+    wedding = db.relationship('Wedding', back_populates='user', cascade='all, delete')
+
 
 class UserSchema(ma.Schema):
+    wedding = fields.Nested('WeddingSchema', exclude=['user', 'id'])
+
     class Meta:
-        fields = ('id', 'f_name', 'l_name', 'email', 'password', 'is_admin')
+        fields = ('id', 'f_name', 'l_name', 'email', 'password', 'is_admin', 'wedding')

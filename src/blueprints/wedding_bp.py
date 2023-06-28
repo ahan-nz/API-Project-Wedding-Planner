@@ -1,7 +1,8 @@
 from flask import Blueprint, request
 from init import db
 from models.wedding import Wedding, WeddingSchema
-from flask_jwt_extended import jwt_required
+from flask_jwt_extended import jwt_required, get_jwt_identity
+from blueprints.auth_bp import admin_or_owner_required
 
 weddings_bp = Blueprint('weddings', __name__, url_prefix='/weddings')
 
@@ -36,7 +37,8 @@ def create_wedding():
     wedding_info = WeddingSchema().load(request.json)
 
     wedding = Wedding(
-        date_of_wedding=wedding_info['date_of_wedding']
+        date_of_wedding = wedding_info['date_of_wedding'],
+        user_id = get_jwt_identity()
     )
 
     db.session.add(wedding)

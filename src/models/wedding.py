@@ -7,7 +7,16 @@ class Wedding(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     date_of_wedding = db.Column(db.Date())
 
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id', ondelete='CASCADE'), nullable=False)
+    user = db.relationship('User', back_populates='wedding', cascade='all, delete')
+
 
 class WeddingSchema(ma.Schema):
+    user = fields.Nested('UserSchema', only=['f_name', 'l_name'])
+
     class Meta:
-        fields = ('id', 'date_of_wedding')
+        fields = ('id', 'date_of_wedding', 'user')
+
+
+
+
