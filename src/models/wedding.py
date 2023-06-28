@@ -5,8 +5,8 @@ class Wedding(db.Model):
     __tablename__ = 'weddings'
 
     id = db.Column(db.Integer, primary_key=True)
-    date = db.Column(db.Date())
+    date_of_wedding = db.Column(db.Date())
 
 class WeddingSchema(ma.Schema):
     class Meta:
-        fields = ('id', 'date')
+        fields = ('id', 'date_of_wedding')

@@ -5,6 +5,9 @@ from models.state import State
 from models.guest import Guest
 from models.venue import Venue
 from models.wedding import Wedding
+from flask import Blueprint
+
+cli_bp = Blueprint('db', __name__)
 
 @cli_bp.cli.command("create")
 def create_db():
