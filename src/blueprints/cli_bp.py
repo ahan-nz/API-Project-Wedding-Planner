@@ -32,6 +32,13 @@ def seed_db():
             email='hello@sallysmith.com',
             password=bcrypt.generate_password_hash('weddingcake').decode('utf-8'),
             is_admin=False
+        ),
+        User(
+            f_name='Chris',
+            l_name='Lee',
+            email='chris@mymail.com',
+            password=bcrypt.generate_password_hash('thisischris').decode('utf-8'),
+            is_admin=False
         )
     ]
 
@@ -139,6 +146,10 @@ def seed_db():
         Wedding(
             date_of_wedding='2024-05-12',
             user_id=users[1].id
+        ),
+        Wedding(
+            date_of_wedding='2025-01-02',
+            user_id=users[2].id
         )
     ]
 
