@@ -15,10 +15,6 @@ class User(db.Model):
 
 
 class UserSchema(ma.Schema):
-    # f_name = fields.String(Required=True)
-    # l_name = fields.String(Required=True)
-    # email = fields.String(Required=True)
-    # password = fields.String(Required=True)
 
     class Meta:
         fields = ('id', 'f_name', 'l_name', 'email', 'password', 'is_admin')
