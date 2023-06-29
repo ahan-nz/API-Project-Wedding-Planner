@@ -11,7 +11,5 @@ class State(db.Model):
 
 
 class StateSchema(ma.Schema):
-    cities = fields.List(fields.Nested('CitySchema', exclude=['id', 'state']))
-
     class Meta:
-        fields = ('id', 'name', 'cities')
+        fields = ('id', 'name')

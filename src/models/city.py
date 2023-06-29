@@ -13,7 +13,7 @@ class City(db.Model):
     venues = db.relationship('Venue', back_populates='city', cascade='all, delete')
 
 class CitySchema(ma.Schema):
-    state = fields.Nested('StateSchema', exclude=['id', 'city'])
+    state = fields.Nested('StateSchema', exclude=['id'])
 
     class Meta:
         fields = ('id', 'name', 'postcode', 'state')

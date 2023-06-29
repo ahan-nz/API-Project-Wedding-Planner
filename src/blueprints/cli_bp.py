@@ -170,6 +170,17 @@ def seed_db():
             min_guests='50',
             max_guests='150',
             city_id=cities[1].id
+        ),
+        Venue(
+            name='Quamby Estate',
+            street_number='1145',
+            street_name='Westwood Rd',
+            phone='0412345678',
+            email='hello@quambyestate.com',
+            cost_per_head='220',
+            min_guests='80',
+            max_guests='300',
+            city_id=cities[4].id
         )
     ]
 
@@ -180,15 +191,18 @@ def seed_db():
     weddings = [
         Wedding(
             date_of_wedding='2023-11-30',
-            user_id=users[0].id
+            user_id=users[0].id,
+            venue_id=venues[1].id
         ),
         Wedding(
             date_of_wedding='2024-05-12',
-            user_id=users[1].id
+            user_id=users[1].id,
+            venue_id=venues[2].id
         ),
         Wedding(
             date_of_wedding='2025-01-02',
-            user_id=users[2].id
+            user_id=users[2].id,
+            venue_id=venues[0].id
         )
     ]
 

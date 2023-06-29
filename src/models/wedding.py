@@ -8,12 +8,15 @@ class Wedding(db.Model):
     date_of_wedding = db.Column(db.Date())
 
     user_id = db.Column(db.Integer, db.ForeignKey('users.id', ondelete='CASCADE'), nullable=False)
+    venue_id = db.Column(db.Integer, db.ForeignKey('venues.id'))
     user = db.relationship('User', back_populates='wedding')
+    venue = db.relationship('Venue', back_populates='weddings')
 
 
 class WeddingSchema(ma.Schema):
     user = fields.Nested('UserSchema', only=['f_name', 'l_name'])
+    venue = fields.Nested('VenueSchema', only=['name', 'city'])
     date_of_wedding = fields.Date(load_default='')
 
     class Meta:
-        fields = ('id', 'date_of_wedding', 'user')
+        fields = ('id', 'date_of_wedding', 'user', 'venue')

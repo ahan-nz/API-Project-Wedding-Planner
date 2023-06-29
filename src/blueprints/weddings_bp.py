@@ -38,7 +38,8 @@ def create_wedding():
 
     wedding = Wedding(
         date_of_wedding = wedding_info['date_of_wedding'],
-        user_id = get_jwt_identity()
+        user_id = get_jwt_identity(),
+        venue_id = wedding_info['venue_id']
     )
 
     db.session.add(wedding)
@@ -57,6 +58,7 @@ def update_wedding(wedding_id):
     if wedding:
         admin_or_owner_required(wedding.user.id)
         wedding.date_of_wedding = wedding_info.get('date_of_wedding', wedding.date_of_wedding)
+        wedding.venue_id = wedding_info.get('venue_id', wedding.venue_id)
         db.session.commit()
         return WeddingSchema().dump(wedding)
     else:
