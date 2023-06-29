@@ -74,11 +74,28 @@ def seed_db():
     cities = [
         City(
             name='Mornington',
-            postcode='3931'
+            postcode='3931',
+            state_id=states[0].id
         ),
         City(
             name='Brookfield',
-            postcode='4069'
+            postcode='4069',
+            state_id=states[1].id
+        ),
+        City(
+            name='Kingsford',
+            postcode='5118',
+            state_id=states[3].id
+        ),
+        City(
+            name='Brookfield',
+            postcode='4069',
+            state_id=states[4].id
+        ),
+        City(
+            name='Hagley',
+            postcode='7292',
+            state_id=states[2].id
         )
     ]
 

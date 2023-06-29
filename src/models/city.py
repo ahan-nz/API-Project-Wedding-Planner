@@ -1,5 +1,5 @@
 from init import db, ma
-# from marshmallow import fields
+from marshmallow import fields
 
 class City(db.Model):
     __tablename__ = 'cities'
@@ -8,7 +8,11 @@ class City(db.Model):
     name = db.Column(db.String(100))
     postcode = db.Column(db.Integer, nullable=False)
 
+    state_id = db.Column(db.Integer, db.ForeignKey('states.id', ondelete='CASCADE'), nullable=False)
+    state = db.relationship('State', back_populates='cities')
 
 class CitySchema(ma.Schema):
+    state = fields.Nested('StateSchema', exclude=['id', 'city'])
+
     class Meta:
-        fields = ('id', 'name', 'postcode')
+        fields = ('id', 'name', 'postcode', 'state')
