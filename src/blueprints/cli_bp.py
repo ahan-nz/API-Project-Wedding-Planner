@@ -157,7 +157,8 @@ def seed_db():
             email='hello@bundaleer.com',
             cost_per_head='190',
             min_guests='80',
-            max_guests='200'
+            max_guests='200',
+            city_id=cities[2].id
         ),
         Venue(
             name='Dalywaters Roses Garden and Chapel',
@@ -167,7 +168,8 @@ def seed_db():
             email='hello@dalywaters.com',
             cost_per_head='220',
             min_guests='50',
-            max_guests='150'
+            max_guests='150',
+            city_id=cities[1].id
         )
     ]
 

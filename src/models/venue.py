@@ -1,5 +1,5 @@
 from init import db, ma
-# from marshmallow import fields
+from marshmallow import fields
 
 class Venue(db.Model):
     __tablename__ = 'venues'
@@ -16,7 +16,12 @@ class Venue(db.Model):
     max_guests = db.Column(db.Integer)
     is_available = db.Column(db.Boolean, default=True)
 
+    city_id = db.Column(db.Integer, db.ForeignKey('cities.id', ondelete='CASCADE'), nullable=False)
+    city = db.relationship('City', back_populates='venues')
+
 
 class VenueSchema(ma.Schema):
+    city = fields.Nested('CitySchema', exclude=['id', 'venue'])
+
     class Meta:
-        fields = ('id', 'name', 'street_number', 'street_name', 'phone', 'email', 'description', 'cost_per_head', 'min_guests', 'max_guests', 'is_available')
+        fields = ('id', 'name', 'street_number', 'street_name', 'phone', 'email', 'description', 'cost_per_head', 'min_guests', 'max_guests', 'is_available', 'city')

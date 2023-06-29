@@ -10,6 +10,7 @@ class City(db.Model):
 
     state_id = db.Column(db.Integer, db.ForeignKey('states.id', ondelete='CASCADE'), nullable=False)
     state = db.relationship('State', back_populates='cities')
+    venues = db.relationship('Venue', back_populates='city', cascade='all, delete')
 
 class CitySchema(ma.Schema):
     state = fields.Nested('StateSchema', exclude=['id', 'city'])
