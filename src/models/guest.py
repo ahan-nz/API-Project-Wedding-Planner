@@ -1,5 +1,5 @@
 from init import db, ma
-# from marshmallow import fields
+from marshmallow import fields
 
 class Guest(db.Model):
     __tablename__ = 'guests'
@@ -11,7 +11,12 @@ class Guest(db.Model):
     email = db.Column(db.String)
     is_rsvp = db.Column(db.Boolean, default=False)
 
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id', ondelete='CASCADE'), nullable=False)
+    user = db.relationship('User', back_populates='guests')
+
 
 class GuestSchema(ma.Schema):
+    user = fields.Nested('UserSchema', only=['f_name', 'l_name'])
+
     class Meta:
-        fields = ('id', 'f_name', 'l_name', 'phone', 'email', 'is_rsvp')
+        fields = ('id', 'f_name', 'l_name', 'phone', 'email', 'is_rsvp', 'user')

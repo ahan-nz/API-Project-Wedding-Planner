@@ -4,6 +4,7 @@ from init import db, ma, bcrypt, jwt
 from blueprints.cli_bp import cli_bp
 from blueprints.auth_bp import auth_bp
 from blueprints.weddings_bp import weddings_bp
+from blueprints.guests_bp import guests_bp
 
 def setup():
     app = Flask(__name__)
@@ -23,5 +24,6 @@ def setup():
     app.register_blueprint(cli_bp)
     app.register_blueprint(auth_bp)
     app.register_blueprint(weddings_bp)
+    app.register_blueprint(guests_bp)
 
     return app

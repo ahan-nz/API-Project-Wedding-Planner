@@ -1,5 +1,4 @@
 from init import db, ma
-from marshmallow import fields
 
 class User(db.Model):
     __tablename__ = 'users'
@@ -12,6 +11,7 @@ class User(db.Model):
     is_admin = db.Column(db.Boolean, default=False)
 
     wedding = db.relationship('Wedding', back_populates='user', cascade='all, delete')
+    guests = db.relationship('Guest', back_populates='user', cascade='all, delete')
 
 
 class UserSchema(ma.Schema):

@@ -8,7 +8,7 @@ class Wedding(db.Model):
     date_of_wedding = db.Column(db.Date())
 
     user_id = db.Column(db.Integer, db.ForeignKey('users.id', ondelete='CASCADE'), nullable=False)
-    user = db.relationship('User', back_populates='wedding', cascade='all, delete')
+    user = db.relationship('User', back_populates='wedding')
 
 
 class WeddingSchema(ma.Schema):

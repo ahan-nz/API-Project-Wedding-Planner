@@ -55,6 +55,15 @@ def seed_db():
         ),
         State(
             name='Tasmania'
+        ),
+        State(
+            name='South Australia'
+        ),
+        State(
+            name='New South Wales'
+        ),
+        State(
+            name='Western Australia'
         )
     ]
 
@@ -84,26 +93,37 @@ def seed_db():
             l_name='Smith',
             phone = '0400100200',
             email='john@johnsmith.com',
-            is_rsvp=True
+            is_rsvp=True,
+            user_id=users[0].id
         ),
         Guest(
             f_name='Margaret',
             l_name='Connolly',
             phone = '0400100100',
-            email='margaret@hello.com'
+            email='margaret@hello.com',
+            user_id=users[1].id
         ),
         Guest(
             f_name='Richard',
             l_name='Han',
             phone = '0400100201',
-            email='richardhan@sample.com'
+            email='richardhan@sample.com',
+            user_id=users[1].id
         ),
         Guest(
             f_name='Eddy',
             l_name='Chan',
             phone = '0434387110',
             email='beans@shibainu.com',
-            is_rsvp=True
+            is_rsvp=True,
+            user_id=users[2].id
+        ),
+        Guest(
+            f_name='Mary',
+            l_name='Lamb',
+            phone = '0400123456',
+            email='marylamb@mail.com',
+            user_id=users[2].id
         )
     ]
 
