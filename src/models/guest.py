@@ -8,7 +8,7 @@ class Guest(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     f_name = db.Column(db.String(50), nullable=False)
     l_name = db.Column(db.String(50), nullable=False)
-    phone = db.Column(db.Integer)
+    phone = db.Column(db.String)
     email = db.Column(db.String)
     is_rsvp = db.Column(db.Boolean, default=False)
 
@@ -18,10 +18,10 @@ class Guest(db.Model):
 
 class GuestSchema(ma.Schema):
     user = fields.Nested('UserSchema', only=['f_name', 'l_name'])
-    f_name = fields.String(required=True, validate=And(Length(min=1, error='First name needs at least one character.'), Regexp('^[a-zA-Z ]+$', error='Only letters and spaces are allowed.')))
-    l_name = fields.String(required=True, validate=And(Length(min=1, error='Last name needs at least one character.'), Regexp('^[a-zA-Z ]+$', error='Only letters and spaces are allowed.')))
-    phone= fields.String(required = True, validate= Regexp('^[0-9 ()+]+$', error="Please provide a valid phone number"))
-    email = fields.String(required = True, validate= Regexp('^[a-zA-Z0-9.!#$%&*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$', error="Please provide a valid email address"))
+    f_name = fields.String(validate=And(Length(min=1, error='First name needs at least one character.'), Regexp('^[a-zA-Z ]+$', error='Only letters and spaces are allowed.')))
+    l_name = fields.String(validate=And(Length(min=1, error='Last name needs at least one character.'), Regexp('^[a-zA-Z ]+$', error='Only letters and spaces are allowed.')))
+    phone= fields.String(validate= Regexp('^[0-9 ()+]+$', error="Please provide a valid phone number"))
+    email = fields.String(validate= Regexp('^[a-zA-Z0-9.!#$%&*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$', error="Please provide a valid email address"))
     is_rsvp = fields.Boolean(load_default=False)
 
     class Meta:

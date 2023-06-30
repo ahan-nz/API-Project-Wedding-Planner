@@ -1,8 +1,7 @@
 from flask import Blueprint, request
 from init import db
 from models.venue import Venue, VenueSchema
-from flask_jwt_extended import jwt_required, get_jwt_identity
-from blueprints.auth_bp import admin_required, admin_or_owner_required
+from flask_jwt_extended import jwt_required
 
 venues_bp = Blueprint('venues', __name__, url_prefix='/venues')
 
@@ -38,10 +37,10 @@ def create_venue():
         street_name = venue_info['street_name'],
         phone = venue_info['phone'],
         email = venue_info['email'],
-        description = venue_info['description'],
-        cost_per_head = venue_info['cost_per_head'],
-        min_guests = venue_info['min_guests'],
-        max_guests = venue_info['max_guests'],
+        description = venue_info.get('description'),
+        cost_per_head = venue_info.get('cost_per_head'),
+        min_guests = venue_info.get('min_guests'),
+        max_guests = venue_info.get('max_guests'),
         city_id = venue_info['city_id']
     )
 

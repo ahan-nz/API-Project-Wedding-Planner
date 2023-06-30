@@ -6,6 +6,7 @@ from blueprints.auth_bp import auth_bp
 from blueprints.weddings_bp import weddings_bp
 from blueprints.guests_bp import guests_bp
 from blueprints.venues_bp import venues_bp
+from blueprints.users_bp import users_bp
 from marshmallow.exceptions import ValidationError
 # from sqlalchemy.exc import DataError, IntegrityError
 
@@ -42,5 +43,6 @@ def setup():
     app.register_blueprint(weddings_bp)
     app.register_blueprint(guests_bp)
     app.register_blueprint(venues_bp)
+    app.register_blueprint(users_bp)
 
     return app
