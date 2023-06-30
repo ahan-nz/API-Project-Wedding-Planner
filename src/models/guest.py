@@ -1,5 +1,6 @@
 from init import db, ma
 from marshmallow import fields
+from marshmallow.validate import Length, And, Regexp
 
 class Guest(db.Model):
     __tablename__ = 'guests'
@@ -17,6 +18,7 @@ class Guest(db.Model):
 
 class GuestSchema(ma.Schema):
     user = fields.Nested('UserSchema', only=['f_name', 'l_name'])
+    phone= fields.String(required = True, validate= Regexp('^[0-9 ()+]+$', error="Please provide a valid phone number"))
 
     class Meta:
         fields = ('id', 'f_name', 'l_name', 'phone', 'email', 'is_rsvp', 'user')

@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask 
 from os import environ
 from init import db, ma, bcrypt, jwt
 from blueprints.cli_bp import cli_bp
@@ -6,6 +6,7 @@ from blueprints.auth_bp import auth_bp
 from blueprints.weddings_bp import weddings_bp
 from blueprints.guests_bp import guests_bp
 from blueprints.venues_bp import venues_bp
+from marshmallow.exceptions import ValidationError
 
 def setup():
     app = Flask(__name__)
@@ -21,7 +22,16 @@ def setup():
     @app.errorhandler(401)
     def unauthorized(err):
         return {'error': str(err)}, 401
+    
+    @app.errorhandler(KeyError)
+    def key_error(err):
+        return {'error': f'The field {err} is required.'}, 400
+    
+    @app.errorhandler(ValidationError)
+    def validation_errror(err):
+        return {'error': err.__dict__['messages']}, 400
 
+    # Registering blueprints to run with "flask run"
     app.register_blueprint(cli_bp)
     app.register_blueprint(auth_bp)
     app.register_blueprint(weddings_bp)
