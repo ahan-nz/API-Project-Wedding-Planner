@@ -3,6 +3,7 @@ from init import db
 from models.wedding import Wedding, WeddingSchema
 from flask_jwt_extended import jwt_required, get_jwt_identity
 from blueprints.auth_bp import admin_required, admin_or_owner_required
+from sqlalchemy.exc import IntegrityError
 
 weddings_bp = Blueprint('weddings', __name__, url_prefix='/weddings')
 
@@ -34,35 +35,41 @@ def one_wedding(wedding_id):
 @weddings_bp.route('/', methods=['POST'])
 @jwt_required()
 def create_wedding():
-    wedding_info = WeddingSchema().load(request.json)
+    try:
+        wedding_info = WeddingSchema().load(request.json)
 
-    wedding = Wedding(
-        date_of_wedding = wedding_info['date_of_wedding'],
-        user_id = get_jwt_identity(),
-        venue_id = wedding_info['venue_id']
-    )
+        wedding = Wedding(
+            date_of_wedding = wedding_info['date_of_wedding'],
+            user_id = get_jwt_identity(),
+            venue_id = wedding_info['venue_id']
+        )
 
-    db.session.add(wedding)
-    db.session.commit()
+        db.session.add(wedding)
+        db.session.commit()
 
-    return WeddingSchema(exclude=['venue_id']).dump(wedding), 201
+        return WeddingSchema(exclude=['venue_id']).dump(wedding), 201
+    except IntegrityError:
+        return {'error': 'Venue entered does not exist.'}, 404
 
 
 # Update a wedding
 @weddings_bp.route('/<int:wedding_id>', methods=['PUT', 'PATCH'])
 @jwt_required()
 def update_wedding(wedding_id):
-    stmt = db.select(Wedding).filter_by(id=wedding_id)
-    wedding = db.session.scalar(stmt)
-    wedding_info = WeddingSchema().load(request.json)
-    if wedding:
-        admin_or_owner_required(wedding.user.id)
-        wedding.date_of_wedding = wedding_info.get('date_of_wedding', wedding.date_of_wedding)
-        wedding.venue_id = wedding_info.get('venue_id', wedding.venue_id)
-        db.session.commit()
-        return WeddingSchema(exclude=['venue_id']).dump(wedding)
-    else:
-       return {'error': 'Wedding entry not found'}, 404
+    try:
+        stmt = db.select(Wedding).filter_by(id=wedding_id)
+        wedding = db.session.scalar(stmt)
+        wedding_info = WeddingSchema().load(request.json)
+        if wedding:
+            admin_or_owner_required(wedding.user.id)
+            wedding.date_of_wedding = wedding_info.get('date_of_wedding', wedding.date_of_wedding)
+            wedding.venue_id = wedding_info.get('venue_id', wedding.venue_id)
+            db.session.commit()
+            return WeddingSchema(exclude=['venue_id']).dump(wedding)
+        else:
+            return {'error': 'Wedding entry not found'}, 404
+    except IntegrityError:
+        return {'error': 'Venue entered does not exist.'}, 404
 
 
 # Delete a wedding

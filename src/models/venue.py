@@ -1,6 +1,6 @@
 from init import db, ma
 from marshmallow import fields
-from marshmallow.validate import Length, And, Regexp
+from marshmallow.validate import Length, Regexp
 
 class Venue(db.Model):
     __tablename__ = 'venues'
@@ -31,6 +31,7 @@ class VenueSchema(ma.Schema):
     cost_per_head = fields.Integer()
     min_guests = fields.Integer()
     max_guests = fields.Integer()
+    city_id = fields.Integer()
 
     class Meta:
         fields = ('id', 'name', 'street_number', 'street_name', 'phone', 'email', 'description', 'cost_per_head', 'min_guests', 'max_guests', 'city_id', 'city')
