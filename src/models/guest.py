@@ -18,7 +18,11 @@ class Guest(db.Model):
 
 class GuestSchema(ma.Schema):
     user = fields.Nested('UserSchema', only=['f_name', 'l_name'])
+    f_name = fields.String(required=True, validate=And(Length(min=1, error='First name needs at least one character.'), Regexp('^[a-zA-Z ]+$', error='Only letters and spaces are allowed.')))
+    l_name = fields.String(required=True, validate=And(Length(min=1, error='Last name needs at least one character.'), Regexp('^[a-zA-Z ]+$', error='Only letters and spaces are allowed.')))
     phone= fields.String(required = True, validate= Regexp('^[0-9 ()+]+$', error="Please provide a valid phone number"))
+    email = fields.String(required = True, validate= Regexp('^[a-zA-Z0-9.!#$%&*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$', error="Please provide a valid email address"))
+    is_rsvp = fields.Boolean(load_default=False)
 
     class Meta:
         fields = ('id', 'f_name', 'l_name', 'phone', 'email', 'is_rsvp', 'user')

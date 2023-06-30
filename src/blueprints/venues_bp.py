@@ -12,7 +12,7 @@ venues_bp = Blueprint('venues', __name__, url_prefix='/venues')
 def all_venues():
     stmt = db.select(Venue)
     venues = db.session.scalars(stmt).all()
-    return VenueSchema(many=True).dump(venues)
+    return VenueSchema(many=True, exclude=['city_id']).dump(venues)
 
 
 # Get one venue
@@ -21,7 +21,7 @@ def one_venue(venue_id):
     stmt = db.select(Venue).filter_by(id=venue_id)
     venue = db.session.scalar(stmt)
     if venue:
-        return VenueSchema().dump(venue)
+        return VenueSchema(exclude=['id', 'city_id']).dump(venue)
     else:
         return {'error': 'Venue not found'}, 404
     
@@ -48,7 +48,7 @@ def create_venue():
     db.session.add(venue)
     db.session.commit()
 
-    return VenueSchema().dump(venue), 201
+    return VenueSchema(exclude=['city_id']).dump(venue), 201
 
 
 # Update a venue
@@ -70,7 +70,7 @@ def update_venue(venue_id):
         venue.max_guests = venue_info.get('max_guests', venue.max_guests)
         venue.city_id = venue_info.get('city_id', venue.city_id)
         db.session.commit()
-        return VenueSchema().dump(venue)
+        return VenueSchema(exclude=['city_id']).dump(venue)
     else:
        return {'error': 'Venue not found'}, 404
 

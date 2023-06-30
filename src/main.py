@@ -7,6 +7,7 @@ from blueprints.weddings_bp import weddings_bp
 from blueprints.guests_bp import guests_bp
 from blueprints.venues_bp import venues_bp
 from marshmallow.exceptions import ValidationError
+# from sqlalchemy.exc import DataError, IntegrityError
 
 def setup():
     app = Flask(__name__)
@@ -28,8 +29,12 @@ def setup():
         return {'error': f'The field {err} is required.'}, 400
     
     @app.errorhandler(ValidationError)
-    def validation_errror(err):
+    def validation_error(err):
         return {'error': err.__dict__['messages']}, 400
+    
+    # @app.errorhandler(IntegrityError)
+    # def integrity_error(err):
+    #     return {err.__dict__['messages']}, 400
 
     # Registering blueprints to run with "flask run"
     app.register_blueprint(cli_bp)

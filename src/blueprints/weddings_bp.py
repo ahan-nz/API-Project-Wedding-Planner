@@ -14,7 +14,7 @@ def all_weddings():
     admin_required()
     stmt = db.select(Wedding)
     weddings = db.session.scalars(stmt).all()
-    return WeddingSchema(many=True).dump(weddings)
+    return WeddingSchema(many=True, exclude=['venue_id']).dump(weddings)
 
 
 # Get one wedding
@@ -25,7 +25,7 @@ def one_wedding(wedding_id):
     wedding = db.session.scalar(stmt)
     if wedding:
         admin_or_owner_required(wedding.user.id)
-        return WeddingSchema().dump(wedding)
+        return WeddingSchema(exclude=['id', 'venue_id']).dump(wedding)
     else:
         return {'error': 'Wedding entry not found'}, 404
     
@@ -45,7 +45,7 @@ def create_wedding():
     db.session.add(wedding)
     db.session.commit()
 
-    return WeddingSchema().dump(wedding), 201
+    return WeddingSchema(exclude=['venue_id']).dump(wedding), 201
 
 
 # Update a wedding
@@ -60,7 +60,7 @@ def update_wedding(wedding_id):
         wedding.date_of_wedding = wedding_info.get('date_of_wedding', wedding.date_of_wedding)
         wedding.venue_id = wedding_info.get('venue_id', wedding.venue_id)
         db.session.commit()
-        return WeddingSchema().dump(wedding)
+        return WeddingSchema(exclude=['venue_id']).dump(wedding)
     else:
        return {'error': 'Wedding entry not found'}, 404
 

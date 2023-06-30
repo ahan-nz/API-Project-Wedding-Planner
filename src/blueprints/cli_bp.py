@@ -23,21 +23,21 @@ def seed_db():
             f_name='admin',
             l_name='admin',
             email='admin@weddings.com',
-            password=bcrypt.generate_password_hash('Adminplanner%').decode('utf-8'),
+            password=bcrypt.generate_password_hash('Adminplanner1%').decode('utf-8'),
             is_admin=True
         ),
         User(
             f_name='Sally',
             l_name='Smith',
             email='hello@sallysmith.com',
-            password=bcrypt.generate_password_hash('ThisisSally!').decode('utf-8'),
+            password=bcrypt.generate_password_hash('ThisisSally1!').decode('utf-8'),
             is_admin=False
         ),
         User(
             f_name='Chris',
             l_name='Lee',
             email='chris@mymail.com',
-            password=bcrypt.generate_password_hash('ThisisChris!').decode('utf-8'),
+            password=bcrypt.generate_password_hash('ThisisChris1?').decode('utf-8'),
             is_admin=False
         )
     ]

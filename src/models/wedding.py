@@ -17,6 +17,7 @@ class WeddingSchema(ma.Schema):
     user = fields.Nested('UserSchema', only=['f_name', 'l_name'])
     venue = fields.Nested('VenueSchema', only=['name', 'city'])
     date_of_wedding = fields.Date(load_default='')
+    venue_id = fields.Integer(required=False)
 
     class Meta:
-        fields = ('id', 'date_of_wedding', 'user', 'venue')
+        fields = ('id', 'date_of_wedding', 'user', 'venue_id', 'venue')
