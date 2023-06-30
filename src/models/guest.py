@@ -22,7 +22,7 @@ class GuestSchema(ma.Schema):
     l_name = fields.String(validate=And(Length(min=1, error='Last name needs at least one character.'), Regexp('^[a-zA-Z ]+$', error='Only letters and spaces are allowed.')))
     phone= fields.String(validate= Regexp('^[0-9 ()+]+$', error="Please provide a valid phone number"))
     email = fields.String(validate= Regexp('^[a-zA-Z0-9.!#$%&*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$', error="Please provide a valid email address"))
-    is_rsvp = fields.Boolean(load_default=False)
+    is_rsvp = fields.Boolean()
 
     class Meta:
         fields = ('id', 'f_name', 'l_name', 'phone', 'email', 'is_rsvp', 'user')

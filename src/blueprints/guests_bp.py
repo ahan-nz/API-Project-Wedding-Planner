@@ -41,7 +41,7 @@ def create_guest():
         l_name = guest_info['l_name'],
         email = guest_info.get('email'),
         phone = guest_info.get('phone'),
-        is_rsvp = guest_info['is_rsvp'],
+        is_rsvp = guest_info.get('is_rsvp'),
         user_id = get_jwt_identity()
     )
 
