@@ -8,13 +8,13 @@ from blueprints.guests_bp import guests_bp
 from blueprints.venues_bp import venues_bp
 from blueprints.users_bp import users_bp
 from marshmallow.exceptions import ValidationError
-# from sqlalchemy.exc import DataError, IntegrityError
 
 def setup():
     app = Flask(__name__)
 
     app.config['SQLALCHEMY_DATABASE_URI'] = environ.get('DB_URI')
     app.config['JWT_SECRET_KEY'] = environ.get('JWT_KEY')
+    app.json.sort_keys = False
 
     db.init_app(app)
     ma.init_app(app)
@@ -32,10 +32,6 @@ def setup():
     @app.errorhandler(ValidationError)
     def validation_error(err):
         return {'error': err.__dict__['messages']}, 400
-    
-    # @app.errorhandler(IntegrityError)
-    # def integrity_error(err):
-    #     return {err.__dict__['messages']}, 400
 
     # Registering blueprints to run with "flask run"
     app.register_blueprint(cli_bp)

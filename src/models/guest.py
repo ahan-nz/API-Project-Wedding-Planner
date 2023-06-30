@@ -26,3 +26,4 @@ class GuestSchema(ma.Schema):
 
     class Meta:
         fields = ('id', 'f_name', 'l_name', 'phone', 'email', 'is_rsvp', 'user')
+        ordered = True

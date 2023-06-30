@@ -21,3 +21,4 @@ class WeddingSchema(ma.Schema):
 
     class Meta:
         fields = ('id', 'date_of_wedding', 'user', 'venue_id', 'venue')
+        ordered = True

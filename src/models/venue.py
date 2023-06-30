@@ -35,4 +35,4 @@ class VenueSchema(ma.Schema):
 
     class Meta:
         fields = ('id', 'name', 'street_number', 'street_name', 'phone', 'email', 'description', 'cost_per_head', 'min_guests', 'max_guests', 'city_id', 'city')
-        # ordered = True
+        ordered = True

@@ -25,4 +25,4 @@ class UserSchema(ma.Schema):
 
     class Meta:
         fields = ('id', 'f_name', 'l_name', 'email', 'password', 'is_admin')
-        # ordered = True
+        ordered = True
