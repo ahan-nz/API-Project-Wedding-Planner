@@ -9,13 +9,15 @@ from flask import Blueprint
 
 cli_bp = Blueprint('db', __name__)
 
+# This command creates the database table structures based on the imported models above
 @cli_bp.cli.command("create")
 def create_db():
-    db.drop_all()
+    db.drop_all() # Any existing tables are first dropped to ensure a clean slate
     db.create_all()
-    print("Tables created successfully")
+    print("Tables created successfully") # A message is printed when the database tables are successfully created
 
 
+# This command inputs data into the previously created tables
 @cli_bp.cli.command("seed")
 def seed_db():
     users = [
@@ -42,10 +44,11 @@ def seed_db():
         )
     ]
 
-    db.session.query(User).delete()
+    db.session.query(User).delete() # Delete any existing User data first to avoid unexpected results
     db.session.add_all(users)
-    db.session.commit()
+    db.session.commit() # Users are committed so it can be added to the guests and weddings models as a foreign key
 
+    # Only select states are inserted here for demonstration purposes
     states = [
         State(
             name='Victoria'
@@ -67,10 +70,11 @@ def seed_db():
         )
     ]
 
-    db.session.query(State).delete()
+    db.session.query(State).delete() # Delete any existing State data first to avoid unexpected results
     db.session.add_all(states)
-    db.session.commit()
+    db.session.commit() # States are committed so it can be added to the cities model as a foreign key
 
+    # Only select cities are added here for demonstration purposes
     cities = [
         City(
             name='Mornington',
@@ -99,9 +103,9 @@ def seed_db():
         )
     ]
 
-    db.session.query(City).delete()
+    db.session.query(City).delete() # Delete any existing cities data first to avoid unexpected results
     db.session.add_all(cities)
-    db.session.commit()
+    db.session.commit() # Cities are committed so it can be added to the venues model as a foreign key
 
 
     guests = [
@@ -144,9 +148,8 @@ def seed_db():
         )
     ]
 
-    db.session.query(Guest).delete()
-    db.session.add_all(guests)
-    db.session.commit()
+    db.session.query(Guest).delete() # Delete any existing guest data first to avoid unexpected results
+    db.session.add_all(guests) # Don't need to commit yet as it's not required as foreign keys for other models
 
     venues = [
         Venue(
@@ -184,9 +187,9 @@ def seed_db():
         )
     ]
 
-    db.session.query(Venue).delete()
+    db.session.query(Venue).delete() # Delete any existing venue data first to avoid unexpected results
     db.session.add_all(venues)
-    db.session.commit()
+    db.session.commit() # Venues are committed so it can be added to the weddings model as a foreign key
 
     weddings = [
         Wedding(
@@ -206,8 +209,8 @@ def seed_db():
         )
     ]
 
-    db.session.query(Wedding).delete()
+    db.session.query(Wedding).delete() # Delete any existing wedding data first to avoid unexpected results
     db.session.add_all(weddings)
-    db.session.commit()
+    db.session.commit() # Final commit to add weddings to the database
 
     print("Models seeded")

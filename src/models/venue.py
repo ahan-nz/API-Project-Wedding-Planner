@@ -2,7 +2,9 @@ from init import db, ma
 from marshmallow import fields
 from marshmallow.validate import Length, Regexp
 
+# SQLAlchemy creates table structure with columns and data types
 class Venue(db.Model):
+    # Renames table to plural based on convention
     __tablename__ = 'venues'
 
     id = db.Column(db.Integer, primary_key=True)
@@ -17,10 +19,11 @@ class Venue(db.Model):
     max_guests = db.Column(db.Integer)
 
     city_id = db.Column(db.Integer, db.ForeignKey('cities.id', ondelete='CASCADE'), nullable=False)
-    city = db.relationship('City', back_populates='venues')
-    weddings = db.relationship('Wedding', back_populates='venue')
+    city = db.relationship('City', back_populates='venues') # No cascade delete as when a venue is deleted, the city shouldn't be deleted.
+    weddings = db.relationship('Wedding', back_populates='venue') # No cascade delete as when a venue is deleted, the wedding entry shouldn't be deleted.
 
 
+# JSON (de)serialization with Marshmallow
 class VenueSchema(ma.Schema):
     city = fields.Nested('CitySchema', exclude=['id'])
     name = fields.String(validate=Length(min=1, error='Name of venue needs at least one character.'))
@@ -35,4 +38,4 @@ class VenueSchema(ma.Schema):
 
     class Meta:
         fields = ('id', 'name', 'street_number', 'street_name', 'phone', 'email', 'description', 'cost_per_head', 'min_guests', 'max_guests', 'city_id', 'city')
-        ordered = True
+        ordered = True # Orders keys in the same order as above

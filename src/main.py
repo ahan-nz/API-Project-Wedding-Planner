@@ -16,11 +16,13 @@ def setup():
     app.config['JWT_SECRET_KEY'] = environ.get('JWT_KEY')
     app.json.sort_keys = False
 
+    # Imports from init used to initialize the application
     db.init_app(app)
     ma.init_app(app)
     jwt.init_app(app)
     bcrypt.init_app(app)
 
+    # The following error handlers capture errors that may occur in this app and returns an error message in a user friendly format
     @app.errorhandler(401)
     def unauthorized(err):
         return {'error': str(err)}, 401
@@ -33,7 +35,7 @@ def setup():
     def validation_error(err):
         return {'error': err.__dict__['messages']}, 400
 
-    # Registering blueprints to run with "flask run"
+    # Registering blueprints to run with command "flask run"
     app.register_blueprint(cli_bp)
     app.register_blueprint(auth_bp)
     app.register_blueprint(weddings_bp)
