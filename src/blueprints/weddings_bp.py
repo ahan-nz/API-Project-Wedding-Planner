@@ -39,9 +39,9 @@ def create_wedding():
         wedding_info = WeddingSchema().load(request.json)
 
         wedding = Wedding(
-            date_of_wedding = wedding_info['date_of_wedding'],
+            date_of_wedding = wedding_info.get('date_of_wedding'),
             user_id = get_jwt_identity(),
-            venue_id = wedding_info['venue_id']
+            venue_id = wedding_info.get('venue_id')
         )
 
         db.session.add(wedding)
