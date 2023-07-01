@@ -2,9 +2,28 @@
 ## By Alicia Han
 ---
 
+This application was created for assignment T2A2. The purpose of this application is for users to plan and organise a wedding.
+
 [Github Repository Link](https://github.com/ahan-nz/API-Project-Wedding-Planner)
 
-This application was created for assignment T2A2. The purpose of this application is for users to plan and organise a wedding.
+---
+
+## Contents
+
+* [Installation and Setup](#installation-and-setup)
+* [R1: Problem Indentification](#r1-identify-the-problem-you-are-trying-to-solve-with-this-app)
+* [R2: Problem Justification](#r2-why-is-it-a-problem-that-needs-solving)
+* [R3: Database System](#r3-why-have-you-chosen-this-database-system-what-are-the-drawbacks-compared-to-others)
+* [R4: ORM Functionalities and Benefits](#r4-identify-and-discuss-the-key-functionalities-and-benefits-of-an-orm)
+* [R5: Endpoints](#r5-endpoints)
+* [R6: ERD](#r6-erd)
+* [R7: Third Party Services](#r7-detail-any-third-party-services-that-your-app-will-use)
+* [R8: Models and Relationships](#r8-describe-your-projects-models-in-terms-of-the-relationships-they-have-with-each-other)
+* [R9: Database Relations](#r9-discuss-the-database-relations-to-be-implemented-in-your-application)
+* [R10: Planning and Tracking Tasks](#r10-describe-the-way-tasks-are-allocated-and-tracked-in-your-project)
+* [References](#references)
+
+---
 
 ### Installation and Setup
 
@@ -55,13 +74,19 @@ flask run
 ```
 The port has been set to 8000, now we should be able to connect to http://127.0.0.1:8000/ via Postman or on our browser.
 
+---
+
 ### R1 Identify the problem you are trying to solve with this app
 
 The purpose of this app is to simplify and organise the task of wedding planning. The aim is make this often stressful task a better experience by giving brides and grooms a starting point on brainstorming and planning for their big day, and having the details all in one place. For the purposes of this assignment the scope has been limited, however there is potential to scale and add more features such as catering or florists.
 
+---
+
 ### R2 Why is it a problem that needs solving?
 
 Wedding planning can be a huge and daunting task with many variables, and most brides and grooms have little experience with event planning. There are a multitude of choices such as venues, catering and vendors, which can be difficult to track. In addition, wedding planners can be very costly, which can be unattainable for many couples who may be stretching their budget for the wedding. 
+
+---
 
 ### R3 Why have you chosen this database system. What are the drawbacks compared to others?
 
@@ -77,6 +102,8 @@ Some of the drawbacks include some open source apps support MySQL but not Postgr
 
 One could argue that PostgreSQL is also less flexible, compared to say MongoDB, in the sense that a table in a relational database cannot have extra fields outside of the set schema. However this is unlikely to be an issue with the limited entities that we have in this application.
 
+---
+
 ### R4 Identify and discuss the key functionalities and benefits of an ORM
 
 Object relational mapper
@@ -88,7 +115,11 @@ Benefits:
 * You can control the structure of your database from your code, which can be managed by a revision control system like Git or Subversion.
 * Supports multiple database platforms e.g. if you're selling your API code for distribution in on-premises soluions.
 
-### R5 Document all endpoints for your API
+---
+
+### R5 Endpoints
+
+---
 
 ### R6 ERD
 
@@ -120,11 +151,15 @@ This simply consists of the unique id number, the name of the city and the postc
 
 As I'm basing my application in Australia, I added states for Australian addresses as part of a normalised data base. Again there is a unique id number as the primary key. As with cities, no CRUD routes are provided as once states are seeded into the database, modifications are unlikely to be needed. I've added some examples of states to be seeded into the database on command "flask db seed".
 
+---
+
 ### R7 Detail any third party services that your app will use
+
+---
 
 ### R8 	Describe your projects models in terms of the relationships they have with each other
 
-
+---
 
 ### R9 Discuss the database relations to be implemented in your application
 
@@ -150,6 +185,8 @@ This relation shown in yellow in the ERD links each venue to a city that it's lo
 * Relationship in pink: States to Cities, One to Many
 
 The relation in pink links each city to a state. A state can contain many cities whereas a city can only be in one state. I separated states into its own table to keep it DRY, as the same state is likely to be repeated between different cities.
+
+---
 
 ### R10 Describe the way tasks are allocated and tracked in your project
 
@@ -191,7 +228,7 @@ These are tasks that I have completed and no longer need to revisit.
 
 The Trello board allowed me to grasp the big picture of my progress throughout this assignment and split my tasks into smaller jobs. THis is a screenshot of my board halfway through my project, as an example:
 
-
+---
 
 ### References
 
