@@ -4,14 +4,56 @@
 
 [Github Repository Link](https://github.com/ahan-nz/API-Project-Wedding-Planner)
 
+This application was created for assignment T2A2. The purpose of this application is for users to plan and organise a wedding.
+
 ### Installation and Setup
 
-psql postgres
-create database wedding_planner;
-\c wedding_planner
-create user planner_dev with password 'wedding123';
-grant all privileges on database wedding_planner to planner_dev;
+Inside the folder of the API application, type the following commands in terminal:
 
+```
+psql
+```
+Then to create the database:
+```
+CREATE DATABASE wedding_planner;
+```
+Next, connect to the new database:
+```
+\c wedding_planner;
+```
+Create a user with a password, then grant all privileges, for example:
+```
+CREATE USER planner_dev WITH PASSWORD 'wedding123';
+
+GRANT ALL PRIVILEGES ON DATABASE wedding_planner TO planner_dev;
+```
+Open a new terminal window, inside the same folder as the source code, run the following to create and activate a virtual environment:
+```
+python3 -m venv .venv
+
+source .venv/bin/activate
+```
+Install packages required:
+```
+python3 -m pip install -r requirements.txt
+```
+Change file '.env.sample' to just '.env', and update the contents, for example:
+```
+# Database connection string
+DB_URI="postgresql+psycopg2://planner_dev:wedding123@localhost:5432/wedding_planner"
+
+# JWT secret key
+JWT_KEY="This is the secret key"
+```
+Finally, run the following cli commands to set up and run the Flask app:
+```
+flask db create
+
+flask db seed
+
+flask run
+```
+The port has been set to 8000, now we should be able to connect to http://127.0.0.1:8000/ via Postman or on our browser.
 
 ### R1 Identify the problem you are trying to solve with this app
 
