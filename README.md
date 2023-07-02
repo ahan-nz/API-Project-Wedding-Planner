@@ -395,7 +395,7 @@ Error message:
 
 * Description: Deletes a user from the database
 
-* Request Parameters: User id
+* Request Parameters: User id, integer
 
 * Authentication: @jwt_required()
 
@@ -413,91 +413,258 @@ Error message:
 
 * Methods: GET
 
-* Description:
+* Description: Retrieves list of all guests, of every user
 
-* Request Parameters:
+* Request Parameters: None
 
-* Authentication:
+* Authentication: @jwt_required()
 
-* Authorisation:
+* Authorisation: Bearer token of admin only
 
-* Request Body:
+* Request Body: None
 
 * Request Response:
 
+Status code: 200 OK
+```
+[
+    {
+        "id": 1,
+        "f_name": "John",
+        "l_name": "Smith",
+        "phone": "0400100200",
+        "email": "john@johnsmith.com",
+        "is_rsvp": true,
+        "user": {
+            "f_name": "admin",
+            "l_name": "admin"
+        }
+    },
+    {
+        "id": 2,
+        "f_name": "Margaret",
+        "l_name": "Connolly",
+        "phone": "0400100100",
+        "email": "margaret@hello.com",
+        "is_rsvp": false,
+        "user": {
+            "f_name": "Sally",
+            "l_name": "Smith"
+        }
+    },
+    {
+        "id": 3,
+        "f_name": "Richard",
+        "l_name": "Han",
+        "phone": "0400100201",
+        "email": "richardhan@sample.com",
+        "is_rsvp": false,
+        "user": {
+            "f_name": "Sally",
+            "l_name": "Smith"
+        }
+    },
+    {
+        "id": 4,
+        "f_name": "Eddy",
+        "l_name": "Chan",
+        "phone": "0434387110",
+        "email": "beans@shibainu.com",
+        "is_rsvp": true,
+        "user": {
+            "f_name": "Chris",
+            "l_name": "Lee"
+        }
+    },
+    {
+        "id": 5,
+        "f_name": "Mary",
+        "l_name": "Lamb",
+        "phone": "0400123456",
+        "email": "marylamb@mail.com",
+        "is_rsvp": false,
+        "user": {
+            "f_name": "Chris",
+            "l_name": "Lee"
+        }
+    }
+]
+```
+
 * Error Handling:
 
-#### 2. /guests/\<int:user_id>
+Scenario: User isn't admin
+
+Error code: 401 UNAUTHORIZED
+
+```
+{
+    "error": "401 Unauthorized: You must be an admin"
+}
+```
+
+#### 2. /guests/\<int:guest_id>
 
 * Methods: GET
 
-* Description:
+* Description: Retrieves information of a single guest
 
-* Request Parameters:
+* Request Parameters: Guest id, integer
 
-* Authentication:
+* Authentication: @jwt_required()
 
-* Authorisation:
+* Authorisation: Bearer token of admin or the owner of the guest entry
 
-* Request Body:
+* Request Body: None
 
 * Request Response:
 
+Status code: 200 OK
+
+```
+{
+    "id": 2,
+    "f_name": "Margaret",
+    "l_name": "Connolly",
+    "phone": "0400100100",
+    "email": "margaret@hello.com",
+    "is_rsvp": false,
+    "user": {
+        "f_name": "Sally",
+        "l_name": "Smith"
+    }
+}
+```
+
 * Error Handling:
+
+Scenario: User isn't admin or owner
+
+Error Code: 401 UNAUTHORIZED
+
+```
+{
+    "error": "401 Unauthorized: You must be an admin or user"
+}
+```
+
+Scenario: Guest id doesn't exist
+
+Error Code: 404 NOT FOUND
+
+```
+{
+    "error": "Guest not found"
+}
+```
 
 #### 3. /guests
 
 * Methods: POST
 
-* Description:
+* Description: Creating a new guest
 
-* Request Parameters:
+* Request Parameters: None
 
-* Authentication:
+* Authentication: @jwt_required
 
-* Authorisation:
+* Authorisation: Bearer token of user
 
 * Request Body:
 
+*Note that email, phone and is_rsvp is optional.
+
+```
+{
+    "f_name":"Bill",
+    "l_name":"McDonald",
+    "email":"bill@yourmail.com",
+    "phone":"+61400123123",
+    "is_rsvp": true
+}
+```
+
 * Request Response:
 
-* Error Handling:
+Status code: 201 CREATED
 
-#### 4. /guests/\<int:user_id>
+```
+{
+    "id": 9,
+    "f_name": "Bill",
+    "l_name": "McDonald",
+    "phone": "+61400123123",
+    "email": "bill@yourmail.com",
+    "is_rsvp": true,
+    "user": {
+        "f_name": "Chris",
+        "l_name": "Lee"
+    }
+}
+```
+
+* Error Handling: Any invaild entries such as password is too short, invalid email or invalid symbols in first or last name.
+
+#### 4. /guests/\<int:guest_id>
 
 * Methods: PUT, PATCH
 
-* Description:
+* Description: Updating the details of a guest
 
-* Request Parameters:
+* Request Parameters: Guest id, integer
 
-* Authentication:
+* Authentication: @jwt_required()
 
-* Authorisation:
+* Authorisation: Bearer token of admin or owner
 
 * Request Body:
 
+*Note that any number of fields can be updated, the first name is updated here as an example
+
+```
+{
+    "f_name":"Josh"
+}
+```
+
 * Request Response:
 
-* Error Handling:
+Status code: 200 OK
 
-#### 5. /guests/\<int:user_id>
+```
+{
+    "id": 9,
+    "f_name": "Josh",
+    "l_name": "McDonald",
+    "phone": "+61400123123",
+    "email": "bill@yourmail.com",
+    "is_rsvp": true,
+    "user": {
+        "f_name": "Chris",
+        "l_name": "Lee"
+    }
+}
+```
+
+* Error Handling: Same scenarios as previously described under other routes, including invalid data input or if the guest id isn't found.
+
+#### 5. /guests/\<int:guest_id>
 
 * Methods: DELETE
 
-* Description:
+* Description: Deleting a guest from the database
 
-* Request Parameters:
+* Request Parameters: Guest id, integer
 
-* Authentication:
+* Authentication: @jwt_required()
 
-* Authorisation:
+* Authorisation: Bearer token of admin or owner of the guest
 
-* Request Body:
+* Request Body: None
 
-* Request Response:
+* Request Response: Status code 200 OK
 
-* Error Handling:
+* Error Handling: Same error code and message as previously described when guest id isn't found.
 
 ### Venues Routes
 
@@ -519,7 +686,7 @@ Error message:
 
 * Error Handling:
 
-#### 2. /venues/\<int:user_id>
+#### 2. /venues/\<int:venue_id>
 
 * Methods: GET
 
@@ -555,7 +722,7 @@ Error message:
 
 * Error Handling:
 
-#### 4. /venues/\<int:user_id>
+#### 4. /venues/\<int:venue_id>
 
 * Methods: PUT, PATCH
 
@@ -573,7 +740,7 @@ Error message:
 
 * Error Handling:
 
-#### 5. /venues/\<int:user_id>
+#### 5. /venues/\<int:venue_id>
 
 * Methods: DELETE
 
@@ -611,7 +778,7 @@ Error message:
 
 * Error Handling:
 
-#### 2. /weddings/\<int:user_id>
+#### 2. /weddings/\<int:wedding_id>
 
 * Methods: GET
 
@@ -647,7 +814,7 @@ Error message:
 
 * Error Handling:
 
-#### 4. /weddings/\<int:user_id>
+#### 4. /weddings/\<int:wedding_id>
 
 * Methods: PUT, PATCH
 
@@ -665,7 +832,7 @@ Error message:
 
 * Error Handling:
 
-#### 5. /weddings/\<int:user_id>
+#### 5. /weddings/\<int:wedding_id>
 
 * Methods: DELETE
 
