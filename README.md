@@ -164,6 +164,246 @@ As I'm basing my application in Australia, I added states for Australian address
 
 ### R8 	Describe your projects models in terms of the relationships they have with each other
 
+All models in this project are stored in a 'models' folder inside the source code folder. Each model is a Python class, representing an entity in the relational database. Each column, or field, is an attribute of the entity. SQLAlchemy was used to create the model class structures, including the columns, data types and any constraints.
+
+* The User Model
+
+```
+# SQLAlchemy creates table structure with columns and data types
+class User(db.Model):
+    # Renames table to plural based on convention
+    __tablename__ = 'users'
+
+    id = db.Column(db.Integer, primary_key=True)
+    f_name = db.Column(db.String(50), nullable=False)
+    l_name = db.Column(db.String(50), nullable=False)
+    email = db.Column(db.String, nullable=False, unique=True)
+    password = db.Column(db.String, nullable=False)
+    is_admin = db.Column(db.Boolean, default=False)
+
+    wedding = db.relationship('Wedding', back_populates='user', cascade='all, delete') # When a user is deleted, the wedding will also be deleted
+    guests = db.relationship('Guest', back_populates='user', cascade='all, delete') # When a user is deleted, associated guests will also be deleted
+
+
+# JSON (de)serialization with Marshmallow
+class UserSchema(ma.Schema):
+    f_name = fields.String(validate=And(Length(min=1, error='First name needs at least one character.'), Regexp('^[a-zA-Z ]+$', error='Only letters and spaces are allowed.')))
+    l_name = fields.String(validate=And(Length(min=1, error='Last name needs at least one character.'), Regexp('^[a-zA-Z ]+$', error='Only letters and spaces are allowed.')))
+    password = fields.String(validate= Regexp('^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[#+-=@$!%*?&])[A-Za-z\d@$#$^()!%*?&]{8,}$', error='Password must contain a minimum of eight characters, at least one uppercase letter, one lowercase letter, one number and one special character.'))
+    email = fields.String(validate= Regexp('^[a-zA-Z0-9.!#$%&*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$', error="Please provide a valid email address"))
+    is_admin = fields.Boolean()
+
+    class Meta:
+        fields = ('id', 'f_name', 'l_name', 'email', 'password', 'is_admin')
+        ordered = True # Orders keys in the same order as above
+```
+The user model is related to the wedding model with a one to one relationship, and to the guest model with a one to many relationship. The unique id of the user model, the primary key, is used as a foreign key by the wedding and guest models. `db.relationship` is set up on both ends so the two models can be mapped together, the `back_populates` argument specifies which column to link with when the tables are joined. Cascade delete is set up so that if a user is deleted, its associated wedding and guests will also be deleted. Marshmallow is used to convert SQLAlchemy models into JSON. 
+
+* The Guest Model
+
+```
+class Guest(db.Model):
+    # Renames table to plural based on convention
+    __tablename__ = 'guests'
+
+    id = db.Column(db.Integer, primary_key=True)
+    f_name = db.Column(db.String(50), nullable=False)
+    l_name = db.Column(db.String(50), nullable=False)
+    phone = db.Column(db.String) # Phone and email optional, e.g. child who doesn't have their own contact information
+    email = db.Column(db.String)
+    is_rsvp = db.Column(db.Boolean, default=False)
+
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id', ondelete='CASCADE'), nullable=False)
+    user = db.relationship('User', back_populates='guests') # No cascade delete as user shouldn't be deleted when a guest is deleted
+
+
+# JSON (de)serialization with Marshmallow
+class GuestSchema(ma.Schema):
+    user = fields.Nested('UserSchema', only=['f_name', 'l_name'])
+    f_name = fields.String(validate=And(Length(min=1, error='First name needs at least one character.'), Regexp('^[a-zA-Z ]+$', error='Only letters and spaces are allowed.')))
+    l_name = fields.String(validate=And(Length(min=1, error='Last name needs at least one character.'), Regexp('^[a-zA-Z ]+$', error='Only letters and spaces are allowed.')))
+    phone= fields.String(validate= Regexp('^[0-9 ()+]+$', error="Please provide a valid phone number"))
+    email = fields.String(validate= Regexp('^[a-zA-Z0-9.!#$%&*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$', error="Please provide a valid email address"))
+    is_rsvp = fields.Boolean()
+
+    class Meta:
+        fields = ('id', 'f_name', 'l_name', 'phone', 'email', 'is_rsvp', 'user')
+        ordered = True # Orders keys in the same order as above
+```
+Each guest is related to a user with a foreign key in the Guest model, of user_id, linking to each primary key, the id, in the User model. Again, `db.relationship` and `back_populates` have been set up to refer to the other side of the relationship. Note that in this case, there is no cascade delete, because if a Guest is deleted, the User should not be deleted.
+A nested field has been set up for user inside the Guest schema. This is so Marshmallow knows which schema to use to process the user attribute. We can see the nested user when we return a guest in JSON format:
+```
+{
+    "id": 4,
+    "f_name": "Eddy",
+    "l_name": "Chan",
+    "phone": "0434387110",
+    "email": "beans@shibainu.com",
+    "is_rsvp": true,
+    "user": {
+        "f_name": "Chris",
+        "l_name": "Lee"
+    }
+}
+```
+
+* The State Model
+
+```
+# SQLAlchemy creates table structure with columns and data types
+class State(db.Model):
+    # Renames table to plural based on convention
+    __tablename__ = 'states'
+
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(20))
+
+    cities = db.relationship('City', back_populates='state', cascade='all, delete') # When a state is deleted, all cities in the state will be deleted
+
+
+# JSON (de)serialization with Marshmallow
+class StateSchema(ma.Schema):
+    class Meta:
+        fields = ('id', 'name')
+```
+This application is based in Australia and Australian addresses have states. The state model is related to the city model in a one to many relationship, where each state contains multiple cities but each city can only belong to one state. Each state is assigned a unique id, the primary key, which is used as a foreign key in the city model. `db.relationship` has been setup and cascade delete was added so that if a state is deleted off the database, then its cities will also be deleted.
+
+* The City Model
+
+```
+# SQLAlchemy creates table structure with columns and data types
+class City(db.Model):
+    # Renames table to plural based on convention
+    __tablename__ = 'cities'
+
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(100))
+    postcode = db.Column(db.Integer, nullable=False)
+
+    state_id = db.Column(db.Integer, db.ForeignKey('states.id', ondelete='CASCADE'), nullable=False)
+    state = db.relationship('State', back_populates='cities') # No cascade delete as the state shouldn't be deleted when a city is deleted
+    venues = db.relationship('Venue', back_populates='city', cascade='all, delete') # When a city is deleted, all venues in the city will also be deleted
+
+# JSON (de)serialization with Marshmallow
+class CitySchema(ma.Schema):
+    state = fields.Nested('StateSchema', exclude=['id'])
+
+    class Meta:
+        fields = ('id', 'name', 'postcode', 'state')
+```
+The city model is linked to states with a many to one relationship as described previously, linked by the foreign key of state_id. It is also related to the venue model, with a one to many relationship. This indicates that each city can have many venues, whereas each venue can only be in one city. A `db.relationship` has been set up for each of the relations so SQLAlchemy knows what each end of the relationship is. What is different is that cascade delete was only set for venues. This is because when a city is deleted, the venues in that city will also be deleted but the state that the city is in shouldn't be deleted. Furthermore, we can see that `fields.Nested` was specified for the state so that Marshmallow knows to refer to the State schema during JSON serialisation.
+
+* The Venue Model
+```
+# SQLAlchemy creates table structure with columns and data types
+class Venue(db.Model):
+    # Renames table to plural based on convention
+    __tablename__ = 'venues'
+
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(100), nullable=False)
+    street_number = db.Column(db.Integer, nullable=False)
+    street_name = db.Column(db.String(200), nullable=False)
+    phone = db.Column(db.String, nullable=False)
+    email = db.Column(db.String, nullable=False, unique=True)
+    description = db.Column(db.Text())
+    cost_per_head = db.Column(db.Integer)
+    min_guests = db.Column(db.Integer)
+    max_guests = db.Column(db.Integer)
+
+    city_id = db.Column(db.Integer, db.ForeignKey('cities.id', ondelete='CASCADE'), nullable=False)
+    city = db.relationship('City', back_populates='venues') # No cascade delete as when a venue is deleted, the city shouldn't be deleted.
+    weddings = db.relationship('Wedding', back_populates='venue') # No cascade delete as when a venue is deleted, the wedding entry shouldn't be deleted.
+
+
+# JSON (de)serialization with Marshmallow
+class VenueSchema(ma.Schema):
+    city = fields.Nested('CitySchema', exclude=['id'])
+    name = fields.String(validate=Length(min=1, error='Name of venue needs at least one character.'))
+    street_number = fields.Integer()
+    street_name = fields.String(validate=Length(min=2, error='Street name needs at least two characters.'))
+    phone= fields.String(validate= Regexp('^[0-9 ()+]+$', error="Please provide a valid phone number"))
+    email = fields.String(validate= Regexp('^[a-zA-Z0-9.!#$%&*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$', error="Please provide a valid email address"))
+    cost_per_head = fields.Integer()
+    min_guests = fields.Integer()
+    max_guests = fields.Integer()
+    city_id = fields.Integer()
+
+    class Meta:
+        fields = ('id', 'name', 'street_number', 'street_name', 'phone', 'email', 'description', 'cost_per_head', 'min_guests', 'max_guests', 'city_id', 'city')
+        ordered = True # Orders keys in the same order as above
+```
+The venue model is related to the city model with a foreign key of city_id, as described previously. It is also related to the wedding model with a one to many relationship, where the primary key of the venue model is used as a foreign key in the wedding model. `db.relationship` has been set up for each of the two relationships here to specify each side of the relationship to SQLAlchemy; no cascade delete is set so that if a venue gets deleted, the wedding entry and the city will still exist. Inside the venue schema, city is also specified as a nested field so that Marshmallow knows to refer to the CityScheme during JSON serialisation. When a venue is returned in JSON format, we can see the nested City, and subsequently the nested State:
+```
+{
+    "name": "Bundaleer Rainforest Gardens",
+    "street_number": 59,
+    "street_name": "Bundaleer St",
+    "phone": "0733741360",
+    "email": "hello@bundaleer.com",
+    "description": null,
+    "cost_per_head": 190,
+    "min_guests": 80,
+    "max_guests": 200,
+    "city": {
+        "state": {
+            "name": "South Australia"
+        },
+        "name": "Kingsford",
+        "postcode": 5118
+    }
+}
+```
+
+* The Wedding Model
+
+```
+# SQLAlchemy creates table structure with columns and data types
+class Wedding(db.Model):
+    # Renames table to plural based on convention
+    __tablename__ = 'weddings'
+
+    id = db.Column(db.Integer, primary_key=True)
+    date_of_wedding = db.Column(db.Date())
+
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id', ondelete='CASCADE'), nullable=False)
+    venue_id = db.Column(db.Integer, db.ForeignKey('venues.id'))
+    user = db.relationship('User', back_populates='wedding') # No cascade delete as when a wedding entry is deleted, the user shouldn't be deleted.
+    venue = db.relationship('Venue', back_populates='weddings') # No cascade delete as when a wedding entry is deleted, the venue shouldn't be deleted.
+
+
+# JSON (de)serialization with Marshmallow
+class WeddingSchema(ma.Schema):
+    user = fields.Nested('UserSchema', only=['f_name', 'l_name'])
+    venue = fields.Nested('VenueSchema', only=['name', 'city'])
+    date_of_wedding = fields.Date()
+    venue_id = fields.Integer()
+
+    class Meta:
+        fields = ('id', 'date_of_wedding', 'user', 'venue_id', 'venue')
+        ordered = True # Orders keys in the same order as above
+```
+The wedding model contains two foreign keys, user_id and venue_id, relating to the primary keys of the user and venue models respectively. The difference is that it is a one to one relationship between user and wedding, whereas it's a one to many relationship between venue and wedding, as described previously. No cascade delete was set up in `db.relationship` because when a wedding entry is deleted, both the user and the venue data should still remain. Both the user and the venue fields are nested inside the wedding schema, so we can see them when we return a wedding entry in JSON; subsequently the city and state are nested inside the venue:
+```
+{
+    "date_of_wedding": "2024-05-12",
+    "user": {
+        "f_name": "Sally",
+        "l_name": "Smith"
+    },
+    "venue": {
+        "name": "Quamby Estate",
+        "city": {
+            "state": {
+                "name": "Tasmania"
+            },
+            "name": "Hagley",
+            "postcode": 7292
+        }
+    }
+}
+```
+
 ---
 
 ### R9 Discuss the database relations to be implemented in your application
