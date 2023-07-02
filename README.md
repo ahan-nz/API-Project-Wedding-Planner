@@ -672,91 +672,290 @@ Status code: 200 OK
 
 * Methods: GET
 
-* Description:
+* Description: Retrieve list of all venues
 
-* Request Parameters:
+* Request Parameters: None
 
-* Authentication:
+* Authentication: None
 
-* Authorisation:
+* Authorisation: None
 
-* Request Body:
+* Request Body: None
 
 * Request Response:
 
-* Error Handling:
+Status code 200 OK
+
+```
+[
+    {
+        "id": 1,
+        "name": "Bundaleer Rainforest Gardens",
+        "street_number": 59,
+        "street_name": "Bundaleer St",
+        "phone": "0733741360",
+        "email": "hello@bundaleer.com",
+        "description": null,
+        "cost_per_head": 190,
+        "min_guests": 80,
+        "max_guests": 200,
+        "city": {
+            "state": {
+                "name": "South Australia"
+            },
+            "name": "Kingsford",
+            "postcode": 5118
+        }
+    },
+    {
+        "id": 2,
+        "name": "Dalywaters Roses Garden and Chapel",
+        "street_number": 240,
+        "street_name": "Bungower Rd",
+        "phone": "0425608264",
+        "email": "hello@dalywaters.com",
+        "description": null,
+        "cost_per_head": 220,
+        "min_guests": 50,
+        "max_guests": 150,
+        "city": {
+            "state": {
+                "name": "Queensland"
+            },
+            "name": "Brookfield",
+            "postcode": 4069
+        }
+    },
+    {
+        "id": 3,
+        "name": "Quamby Estate",
+        "street_number": 1145,
+        "street_name": "Westwood Rd",
+        "phone": "0412345678",
+        "email": "hello@quambyestate.com",
+        "description": null,
+        "cost_per_head": 220,
+        "min_guests": 80,
+        "max_guests": 300,
+        "city": {
+            "state": {
+                "name": "Tasmania"
+            },
+            "name": "Hagley",
+            "postcode": 7292
+        }
+    }
+]
+```
 
 #### 2. /venues/\<int:venue_id>
 
 * Methods: GET
 
-* Description:
+* Description: Route for getting the information of one venue
 
-* Request Parameters:
+* Request Parameters: Venue id, integer
 
-* Authentication:
+* Authentication: None
 
-* Authorisation:
+* Authorisation: None
 
-* Request Body:
+* Request Body: None
 
 * Request Response:
 
+Status code: 200 OK
+
+```
+{
+    "name": "Dalywaters Roses Garden and Chapel",
+    "street_number": 240,
+    "street_name": "Bungower Rd",
+    "phone": "0425608264",
+    "email": "hello@dalywaters.com",
+    "description": null,
+    "cost_per_head": 220,
+    "min_guests": 50,
+    "max_guests": 150,
+    "city": {
+        "state": {
+            "name": "Queensland"
+        },
+        "name": "Brookfield",
+        "postcode": 4069
+    }
+}
+```
+
 * Error Handling:
+
+Scenario: Venue id doesn't exist
+
+Error code: 404 NOT FOUND
+
+Error message:
+
+```
+{
+    "error": "Venue not found"
+}
+```
 
 #### 3. /venues
 
 * Methods: POST
 
-* Description:
+* Description: Creating a new venue in the database
 
-* Request Parameters:
+* Request Parameters: None
 
-* Authentication:
+* Authentication: @jwt_required()
 
-* Authorisation:
+* Authorisation: Bearer token of user
 
 * Request Body:
 
+*Note that fields for description, cost_per_head, min_guests and max_guests are optional.
+
+```
+{
+    "name":"Beachside Wedding Space",
+    "street_number":"123",
+    "street_name":"Beach Rd",
+    "phone":"+61400112233",
+    "email":"beachside@weddings.com",
+    "cost_per_head":"150",
+    "city_id": 4
+}
+```
+
 * Request Response:
 
+Status code: 201 CREATED
+
+```
+{
+    "id": 4,
+    "name": "Beachside Wedding Space",
+    "street_number": 123,
+    "street_name": "Beach Rd",
+    "phone": "+61400112233",
+    "email": "beachside@weddings.com",
+    "description": null,
+    "cost_per_head": 150,
+    "min_guests": null,
+    "max_guests": null,
+    "city": {
+        "name": "Brookfield",
+        "postcode": 4069,
+        "state": {
+            "name": "New South Wales"
+        }
+    }
+}
+```
+
 * Error Handling:
+
+Scenario: Invalid city id entered as part of the address of the venue
+
+Error code: 400 BAD REQUEST
+
+Error message:
+
+```
+{
+    "error": "City ID does not exist."
+}
+```
+
+Scenario: Missing compulsory fields
+
+Error code: 400 BAD REQUEST
+
+Error message:
+
+```
+{
+    "error": "The field 'phone' is required."
+}
+```
+
+Input is also validated, for example if integers aren't entered into min or max guests, we get a bad request.
 
 #### 4. /venues/\<int:venue_id>
 
 * Methods: PUT, PATCH
 
-* Description:
+* Description: Updating the details of the venue
 
-* Request Parameters:
+* Request Parameters: Venue ID, integer
 
-* Authentication:
+* Authentication: @jwt_required()
 
-* Authorisation:
+* Authorisation: Bearer token of user
 
 * Request Body:
 
+*Note that any number of fields can be updated, the phone number is changed here as an example
+
+```
+{
+    "phone":"+6100445566"
+}
+```
+
 * Request Response:
 
+Status code: 200 OK
+
+```
+{
+    "id": 4,
+    "name": "Beachside Wedding Space",
+    "street_number": 123,
+    "street_name": "Beach Rd",
+    "phone": "+6100445566",
+    "email": "beachside@weddings.com",
+    "description": null,
+    "cost_per_head": 150,
+    "min_guests": null,
+    "max_guests": null,
+    "city": {
+        "name": "Brookfield",
+        "postcode": 4069,
+        "state": {
+            "name": "New South Wales"
+        }
+    }
+}
+```
+
 * Error Handling:
+
+Same error message as the previous route if a non-existent city id is provided.
+
+Also same error message as the route for reading one venue entry if the venue id is invalid.
+
+Input is also validated, for example invalid emails won't be accepted.
 
 #### 5. /venues/\<int:venue_id>
 
 * Methods: DELETE
 
-* Description:
+* Description: Deleting a venue from the database
 
-* Request Parameters:
+* Request Parameters: Venue ID, integer
 
-* Authentication:
+* Authentication: @jwt_required()
 
-* Authorisation:
+* Authorisation: Bearer token of user
 
-* Request Body:
+* Request Body: None
 
-* Request Response:
+* Request Response: Status code 200 OK
 
-* Error Handling:
+* Error Handling: Same error message as previous described if the venue id doesn't exist.
 
 ### Weddings Routes
 

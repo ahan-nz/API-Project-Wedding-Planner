@@ -30,7 +30,7 @@ def one_venue(venue_id):
 
 # CREATE: Route for creating a new venue, with login required
 @venues_bp.route('/', methods=['POST'])
-@jwt_required()
+@jwt_required() # Only existing users can create new venues
 def create_venue():
     try:
         # Parse, sanitize and validate the incoming JSON data via the schema
@@ -55,12 +55,12 @@ def create_venue():
 
         return VenueSchema(exclude=['city_id']).dump(venue), 201 # City id is excluded as city name will be returned anyway
     except IntegrityError: # Integrity error in a try except block, handles invalid city id with a clear error message.
-        return {'error': 'City ID does not exist.'}, 404
+        return {'error': 'City ID does not exist.'}, 400
 
 
 # UPDATE: Modifying a venue's information, with the id in the URL, login required.
 @venues_bp.route('/<int:venue_id>', methods=['PUT', 'PATCH'])
-@jwt_required()
+@jwt_required() # Only existing users can modify venue information
 def update_venue(venue_id):
     try:
         stmt = db.select(Venue).filter_by(id=venue_id)
@@ -82,12 +82,12 @@ def update_venue(venue_id):
         else:
             return {'error': 'Venue not found'}, 404 # Handles error of invalid venue id with a clear error message
     except IntegrityError: # Integrity error in a try except block, handles invalid city id with a clear error message.
-        return {'error': 'City ID does not exist.'}, 404
+        return {'error': 'City ID does not exist.'}, 400
 
 
 # DELETE: Removing a venue, with the id in the URL, login required.
 @venues_bp.route('/<int:venue_id>', methods=['DELETE'])
-@jwt_required()
+@jwt_required() # Only existing users can delete venues
 def delete_venue(venue_id):
     stmt = db.select(Venue).filter_by(id=venue_id)
     venue = db.session.scalar(stmt)
