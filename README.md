@@ -90,7 +90,7 @@ Wedding planning can be a huge and daunting task with many variables, and most b
 
 ### R3 Why have you chosen this database system. What are the drawbacks compared to others?
 
-PostgreSQL is a widely-adopted object-relational DBMS that I chose due to it's many advantages. Firstly it is open source and free to use, which keeps the initial cost small (if any). As a beginner in the field, it has a lower learning curve compared to some other database systems. In addition, as mentioned above, it is widely used in the industry and is supported by a large community with extensive forum discussions and documentation, hence there is help readily available if there are any issues. 
+PostgreSQL is a widely-adopted object-relational DBMS that I chose due to it's many advantages. Firstly it is open source and free to use, which keeps the initial cost low (if any). As a beginner in the field, it has a lower learning curve compared to some other database systems. In addition, as mentioned above, it is widely used in the industry and is supported by a large community with extensive forum discussions and documentation, hence there is help readily available if there are any issues. 
 
 Despite being free to use, PostgreSQL is very feature-rich. It is highly extensible, which means new functions, data types, etc, can be added. There is a wide range of libraries and tools available for developers and is supported across all the common platforms including MacOS, Linux, and Windows (PostgreSQL, 2020). It is very scalable, and used with relational databases that can store large datasets in tables, utilising transactional Data Definition Language to easily implement mdifications to the database with minimal disruption to the framework. Although my application won't have a big database for this assignment, there is the potential to grow. It is also helpful to have the data in a rigid schema for ease of access and also to establish clear relationships between each entity.
 
@@ -106,14 +106,19 @@ One could argue that PostgreSQL is also less flexible, compared to say MongoDB, 
 
 ### R4 Identify and discuss the key functionalities and benefits of an ORM
 
-Object relational mapper
-Relational databases typically uses a querying language called SQL to manipulate the structure and data in our database. With ORM, the SQL is generated for us behind the scenes.
+ORMs, or object relational mappers, allows the mapping of objects from an OOP language to a relational database. In this case, we're working with Python objects using SQLAlchemy.
 
-Benefits:
-* Works with Python objects in this case, we don't have to write SQL
-* Allows you to switch your database easily
-* You can control the structure of your database from your code, which can be managed by a revision control system like Git or Subversion.
-* Supports multiple database platforms e.g. if you're selling your API code for distribution in on-premises soluions.
+A main functionality is to be able to work with classes and objects instead of having to write low level SQL queries to manipulate a relational database. Developers can take an object-orientated approach, with database entities as the objects. The benefit is that the code is more clean, organised, reusable and readable, and programmers can work in a language that they may be more proficient in (Tuama, 2022).
+
+Another functionality is the support of multiple databases. It acts as the middleman between the database and the application, keeping the code database-agnostic. The benefit is that developers can switch to a different database system easily, e.g. PostgreSQL and MySQL, without needing to rewrite the entire code, as an ORM would handle the translation.
+
+ORMs also enable the management of the database from our code, such as controlling the structure, with schemas defined in models. The ORM generates the tables, columns and relationships automatically, which is beneficial in eliminating manual schema creation and modification. In this application, each model class represents an entity in the relational database, such as users or venues. Each attribute, or column, is a field in the class, such as the email address or the first name of a user. The ORM tracks and synchronises any updates to objects with the database.
+
+In addition, ORMs provide data validation mechanisms. Data integrity can be enforced by validations against data types and constraints, properly formatted and valid data means less inconsistencies and errors in the database. 
+
+The above point also means that ORMs provide better security. Common vulnerabilities such as the risk of SQL injections are reduced with the input sanitisation. Moreover, security is also improved with being able to assign different levels of access to various users if necessary, maintaining data confidentiality (Abba, 2022).
+
+As an ORM generates SQL queries behind the scenes, a potential drawback is that what is happening in the background can be abstract and less obvious to the developer during any troubleshooting. Furthermore, writing queries in SQL can offer more control, flexibility and customisation for fine tuning, compared to only using the ORM (LinkedIn, 2023).
 
 ---
 
@@ -168,23 +173,23 @@ This database consists of five relations between six normalised tables, details 
 
 * Relationship in green: Users to Guests, One to Many
 
-As seen in the ERD with the relationship linked in green, using Crow's Foot notation, every guest must be connected to a user, and a user can have none or many guests. This is because a user may not have added any guests to their wedding planning, but every guest entry made must be invited to someone's wedding. I've made guests associated with the user rather than the weddings entity as users may also decide to add guests first before making a wedding entry, therefore guests can exist without there being a weddings entity. In addition, guests can only be connected to one user as a guest's personal information is confidential and shouldn't be shared between multiple users.
+As seen in the ERD with the relationship linked in green, using Crow's Foot notation, every guest must be connected to a user, and a user can have none or many guests. This is because a user may not have added any guests to their wedding planning, but every guest entry made must be invited to someone's wedding. I've made guests associated with the user rather than the weddings entity as users may also decide to add guests first before making a wedding entry, therefore guests can exist without there being a weddings entity. In addition, guests can only be connected to one user as a guest's personal information is confidential and shouldn't be shared between multiple users. The foreign key is stored in the many table, which is 'guests', referring to the primary keys of 'users'.
 
 * Relationship in blue: Users to Weddings, One to One
 
-As highlighted in blue in the ERD, every wedding entry must be connected to a user, as the user creates the wedding and therefore a wedding cannot exist without an user. In addition, a user can only have one wedding entry maximum at a time, as brides and grooms are unlikely to be planning for more than one wedding at a time. Each user may or may not have created a wedding entry yet, hence the Crow's Foot symbol is 0 or 1 on the 'weddings' end.
+As highlighted in blue in the ERD, every wedding entry must be connected to a user. In addition, a user can only have one wedding entry maximum at a time, as brides and grooms are unlikely to be planning for more than one wedding at a time. Each user may or may not have created a wedding entry yet, hence the Crow's Foot symbol is 0 or 1 on the 'weddings' end. A wedding cannot exist without a user whereas a user won't necessarily have a wedding entry. The foreign key is stored in the optional table, which is 'weddings', referring to the primary keys of 'users'.
 
 * Relationship in red: Venues to Weddings, One to Many
 
-This relationship is shown in red in the ERD above. Every venue can be added as a foreign key, via its unique id, to multiple different wedding entries, hence the one to many. A venue can also exist in the database without being linked to any wedding entries at all. A wedding is assumed to be hosted at only one venue, for the purposes of this app.
+This relationship is shown in red in the ERD above. Every venue can be added to multiple different wedding entries, hence the one to many. A venue can also exist in the database without being linked to any wedding entries at all. For the purposes of this app, a wedding is assumed to be hosted at only one venue. The foreign key is stored in the many table, which is 'weddings', referring to the primary keys of 'venues'.
 
 * Relationship in yellow: Cities to Venues, One to Many
 
-This relation shown in yellow in the ERD links each venue to a city that it's located in. A city can have none or many venues, whereas it is only possible for a venue to be located in one city. I separated cities into a different table from the address attributes in venues to keep it DRY, as the same city is likely to be repeated between different venues.
+This relation shown in yellow in the ERD links each venue to a city that it's located in. A city can have none or many venues, whereas it is only possible for a venue to be located in one city. I separated cities into a different table from the address attributes in venues to keep it DRY, as the same city is likely to be repeated between different venues. The foreign key is stored in the many table, which is 'venues', referring to the primary keys of 'cities'.
 
 * Relationship in pink: States to Cities, One to Many
 
-The relation in pink links each city to a state. A state can contain many cities whereas a city can only be in one state. I separated states into its own table to keep it DRY, as the same state is likely to be repeated between different cities.
+The relation in pink links each city to a state. A state can contain many cities whereas a city can only be in one state. I separated states into its own table to keep it DRY, as the same state is likely to be repeated between different cities. The foreign key is stored in the many table, which is 'cities', referring to the primary keys of 'states'.
 
 ---
 
@@ -237,4 +242,10 @@ The Trello board allowed me to grasp the big picture of my progress throughout t
 * MongoDB. (2023). What Does ACID Compliance Mean? | An Introduction. [online] Available at: https://www.mongodb.com/databases/acid-compliance#:~:text=Well%2C%20ACID%20stands%20for%20atomicity.
 
 * Dhruv, S. (2019). Pros and Cons of using PostgreSQL for Application Development. [online] Aalpha. Available at: https://www.aalpha.net/blog/pros-and-cons-of-using-postgresql-for-application-development/.
+
+* LinkedIn. (2023). What are the benefits and drawbacks of using ORM for complex queries and aggregations? [online] Available at: https://www.linkedin.com/advice/0/what-benefits-drawbacks-using-orm-complex-queries#:~:text=One%20of%20the%20main%20benefits/.
+
+* Tuama, D.Ó. (2022). Object Relational Mapping: What is an ORM? [online] Code Institute Global. Available at: https://codeinstitute.net/global/blog/object-relational-mapping/.
+
+* Abba, I.V. (2022). What is an ORM – The Meaning of Object Relational Mapping Database Tools. [online] freeCodeCamp.org. Available at: https://www.freecodecamp.org/news/what-is-an-orm-the-meaning-of-object-relational-mapping-database-tools/.
 
