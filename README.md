@@ -124,6 +124,376 @@ As an ORM generates SQL queries behind the scenes, a potential drawback is that 
 
 ### R5 Endpoints
 
+### Auth Routes
+
+#### 1. /register
+
+* Methods: 
+
+* Description:
+
+* Request Parameters:
+
+* Authentication:
+
+* Authorisation:
+
+* Request Body:
+
+* Request Response:
+
+* Error Handling:
+
+#### 2. /login
+
+* Methods: 
+
+* Description: 
+
+* Request Parameters: 
+
+* Authentication: 
+
+* Authorisation: 
+
+* Request Body: 
+
+* Request Response: 
+
+* Error Handling:
+
+### Users Routes
+
+#### 1. /users
+
+* Methods:
+
+* Description:
+
+* Request Parameters:
+
+* Authentication:
+
+* Authorisation:
+
+* Request Body:
+
+* Request Response:
+
+* Error Handling:
+
+#### 2. /users/\<int:user_id>
+
+* Methods: PUT, PATCH
+
+* Description:
+
+* Request Parameters:
+
+* Authentication:
+
+* Authorisation:
+
+* Request Body:
+
+* Request Response:
+
+* Error Handling:
+
+#### 3. /users/\<int:user_id>
+
+* Methods: DELETE
+
+* Description:
+
+* Request Parameters:
+
+* Authentication:
+
+* Authorisation:
+
+* Request Body:
+
+* Request Response:
+
+* Error Handling:
+
+### Guests Routes
+
+#### 1. /guests
+
+* Methods: GET
+
+* Description:
+
+* Request Parameters:
+
+* Authentication:
+
+* Authorisation:
+
+* Request Body:
+
+* Request Response:
+
+* Error Handling:
+
+#### 2. /guests/\<int:user_id>
+
+* Methods: GET
+
+* Description:
+
+* Request Parameters:
+
+* Authentication:
+
+* Authorisation:
+
+* Request Body:
+
+* Request Response:
+
+* Error Handling:
+
+#### 3. /guests
+
+* Methods: POST
+
+* Description:
+
+* Request Parameters:
+
+* Authentication:
+
+* Authorisation:
+
+* Request Body:
+
+* Request Response:
+
+* Error Handling:
+
+#### 4. /guests/\<int:user_id>
+
+* Methods: PUT, PATCH
+
+* Description:
+
+* Request Parameters:
+
+* Authentication:
+
+* Authorisation:
+
+* Request Body:
+
+* Request Response:
+
+* Error Handling:
+
+#### 5. /guests/\<int:user_id>
+
+* Methods: DELETE
+
+* Description:
+
+* Request Parameters:
+
+* Authentication:
+
+* Authorisation:
+
+* Request Body:
+
+* Request Response:
+
+* Error Handling:
+
+### Venues Routes
+
+#### 1. /venues
+
+* Methods: GET
+
+* Description:
+
+* Request Parameters:
+
+* Authentication:
+
+* Authorisation:
+
+* Request Body:
+
+* Request Response:
+
+* Error Handling:
+
+#### 2. /venues/\<int:user_id>
+
+* Methods: GET
+
+* Description:
+
+* Request Parameters:
+
+* Authentication:
+
+* Authorisation:
+
+* Request Body:
+
+* Request Response:
+
+* Error Handling:
+
+#### 3. /venues
+
+* Methods: POST
+
+* Description:
+
+* Request Parameters:
+
+* Authentication:
+
+* Authorisation:
+
+* Request Body:
+
+* Request Response:
+
+* Error Handling:
+
+#### 4. /venues/\<int:user_id>
+
+* Methods: PUT, PATCH
+
+* Description:
+
+* Request Parameters:
+
+* Authentication:
+
+* Authorisation:
+
+* Request Body:
+
+* Request Response:
+
+* Error Handling:
+
+#### 5. /venues/\<int:user_id>
+
+* Methods: DELETE
+
+* Description:
+
+* Request Parameters:
+
+* Authentication:
+
+* Authorisation:
+
+* Request Body:
+
+* Request Response:
+
+* Error Handling:
+
+### Weddings Routes
+
+#### 1. /weddings
+
+* Methods: GET
+
+* Description:
+
+* Request Parameters:
+
+* Authentication:
+
+* Authorisation:
+
+* Request Body:
+
+* Request Response:
+
+* Error Handling:
+
+#### 2. /weddings/\<int:user_id>
+
+* Methods: GET
+
+* Description:
+
+* Request Parameters:
+
+* Authentication:
+
+* Authorisation:
+
+* Request Body:
+
+* Request Response:
+
+* Error Handling:
+
+#### 3. /weddings
+
+* Methods: POST
+
+* Description:
+
+* Request Parameters:
+
+* Authentication:
+
+* Authorisation:
+
+* Request Body:
+
+* Request Response:
+
+* Error Handling:
+
+#### 4. /weddings/\<int:user_id>
+
+* Methods: PUT, PATCH
+
+* Description:
+
+* Request Parameters:
+
+* Authentication:
+
+* Authorisation:
+
+* Request Body:
+
+* Request Response:
+
+* Error Handling:
+
+#### 5. /weddings/\<int:user_id>
+
+* Methods: DELETE
+
+* Description:
+
+* Request Parameters:
+
+* Authentication:
+
+* Authorisation:
+
+* Request Body:
+
+* Request Response:
+
+* Error Handling:
+
 ---
 
 ### R6 ERD
