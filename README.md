@@ -274,57 +274,138 @@ Error message:
 
 #### 1. /users
 
-* Methods:
+* Methods: GET
 
-* Description:
+* Description: Retrieves a list of all users, excluding passwords
 
-* Request Parameters:
+* Request Parameters: None
 
-* Authentication:
+* Authentication: @jwt_required()
 
-* Authorisation:
+* Authorisation: Bearer token of admin only
 
-* Request Body:
+* Request Body: None
 
-* Request Response:
+* Request Response: 
+
+HTTP Status Code: 200 OK
+
+```
+[
+    {
+        "id": 1,
+        "f_name": "admin",
+        "l_name": "admin",
+        "email": "admin@weddings.com",
+        "is_admin": true
+    },
+    {
+        "id": 2,
+        "f_name": "Sally",
+        "l_name": "Smith",
+        "email": "hello@sallysmith.com",
+        "is_admin": false
+    },
+    {
+        "id": 3,
+        "f_name": "Chris",
+        "l_name": "Lee",
+        "email": "chris@mymail.com",
+        "is_admin": false
+    }
+]
+```
 
 * Error Handling:
+
+Scenario: User isn't admin
+
+Error Code: 401 UNAUTHORIZED
+
+Error Message:
+```
+{
+    "error": "401 Unauthorized: You must be an admin"
+}
+```
 
 #### 2. /users/\<int:user_id>
 
 * Methods: PUT, PATCH
 
-* Description:
+* Description: Updating a user's information
 
-* Request Parameters:
+* Request Parameters: User id, integer
 
-* Authentication:
+* Authentication: @jwt_required()
 
-* Authorisation:
+* Authorisation: Bearer token of admin or the user themselves
 
 * Request Body:
 
+Can have any number of fields, this is an example of updating just the surname.
+
+```
+{
+    "l_name":"McDonald"
+}
+```
+
 * Request Response:
 
+Status Code: 200 OK
+
+```
+{
+    "f_name": "Chris",
+    "l_name": "McDonald",
+    "email": "chris@mymail.com",
+    "is_admin": false
+}
+```
+
 * Error Handling:
+
+Scenario: User id in URL doesn't exist
+
+Error code: 404 NOT FOUND
+
+Error message:
+
+```
+{
+    "error": "User not found"
+}
+```
+
+Scenario: User isn't admin or the person they are trying to update
+
+Error code: 401 UNAUTHORIZED
+
+Error message:
+```
+{
+    "error": "401 Unauthorized: You must be an admin or user"
+}
+```
 
 #### 3. /users/\<int:user_id>
 
 * Methods: DELETE
 
-* Description:
+* Description: Deletes a user from the database
 
-* Request Parameters:
+* Request Parameters: User id
 
-* Authentication:
+* Authentication: @jwt_required()
 
-* Authorisation:
+* Authorisation: Bearer token of admin or the user themselves
 
-* Request Body:
+* Request Body: None
 
-* Request Response:
+* Request Response: Status code 200 OK
 
-* Error Handling:
+* Error Handling: Same scenarios and messages as the previous route for updating a user
 
 ### Guests Routes
 
