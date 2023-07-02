@@ -16,6 +16,11 @@ This application was created for assignment T2A2. The purpose of this applicatio
 * [R3: Database System](#r3-why-have-you-chosen-this-database-system-what-are-the-drawbacks-compared-to-others)
 * [R4: ORM Functionalities and Benefits](#r4-identify-and-discuss-the-key-functionalities-and-benefits-of-an-orm)
 * [R5: Endpoints](#r5-endpoints)
+    * [Auth Routes](#auth-routes)
+    * [Users Routes](#users-routes)
+    * [Guests Routes](#guests-routes)
+    * [Venues Routes](#venues-routes)
+    * [Weddings Routes](#weddings-routes)
 * [R6: ERD](#r6-erd)
 * [R7: Third Party Services](#r7-detail-any-third-party-services-that-your-app-will-use)
 * [R8: Models and Relationships](#r8-describe-your-projects-models-in-terms-of-the-relationships-they-have-with-each-other)
@@ -128,39 +133,142 @@ As an ORM generates SQL queries behind the scenes, a potential drawback is that 
 
 #### 1. /register
 
-* Methods: 
+* Methods: POST
 
-* Description:
+* Description: Creating a new user profile in the database
 
-* Request Parameters:
+* Request Parameters: None
 
-* Authentication:
+* Authentication: None
 
-* Authorisation:
-
-* Request Body:
-
-* Request Response:
-
-* Error Handling:
-
-#### 2. /login
-
-* Methods: 
-
-* Description: 
-
-* Request Parameters: 
-
-* Authentication: 
-
-* Authorisation: 
+* Authorisation: None
 
 * Request Body: 
 
-* Request Response: 
+```
+{
+    "f_name":"John",
+    "l_name":"Kim",
+    "email":"john@mail.com",
+    "password":"Thisisjohn123%"
+}
+```
+
+* Request Response:
+
+HTTP Status Code: 201 CREATED
+
+```
+{
+    "id": 4,
+    "f_name": "John",
+    "l_name": "Kim",
+    "email": "john@mail.com",
+    "is_admin": false
+}
+```
 
 * Error Handling:
+
+Scenario: Email address is already registered
+
+Error code: 409 CONFLICT
+
+Error Message: 
+```
+{
+    "error": "Email address already in use"
+}
+```
+
+Scenario: Missing field for f_name (same applies to l_name, email and password)
+
+Error code: 400 BAD REQUEST
+
+Error Message:
+```
+{
+    "error": "The field 'f_name' is required."
+}
+```
+
+Scenario: Password is invalid
+
+Error code: 400 BAD REQUEST
+
+Error Message:
+```
+{
+    "error": {
+        "password": [
+            "Password must contain a minimum of eight characters, at least one uppercase letter, one lowercase letter, one number and one special character."
+        ]
+    }
+}
+```
+There are also customised error messages for invalid email addresses and invalid symbols first and last names.
+
+#### 2. /login
+
+* Methods: POST
+
+* Description: User login and receiving JWT token
+
+* Request Parameters: None
+
+* Authentication: None
+
+* Authorisation: None
+
+* Request Body: 
+
+```
+{
+    "email":"hello@sallysmith.com",
+    "password":"ThisisSally1!"
+}
+```
+
+* Request Response: 
+
+HTTP Status Code: 200 OK
+
+```
+{
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTY4ODI3MzA5MiwianRpIjoiZjgxMGI5MWYtNGM3Ni00NzdkLTlmNWEtYjQ2ZTJhM2NhYWM2IiwidHlwZSI6ImFjY2VzcyIsInN1YiI6MiwibmJmIjoxNjg4MjczMDkyLCJleHAiOjE2ODgzMTYyOTJ9.XAWM1RCb5Yub6kRXkUnW6ZQBqBr7vZ5WRoblCgHYYlQ",
+    "user": {
+        "id": 2,
+        "f_name": "Sally",
+        "l_name": "Smith",
+        "email": "hello@sallysmith.com",
+        "is_admin": false
+    }
+}
+```
+
+* Error Handling:
+
+Scenario: Email or password is incorrect
+
+Error code: 401 UNAUTHORIZED
+
+Error message:
+```
+{
+    "error": "Invalid email address or password"
+}
+```
+
+Scenario: Email or password is missing
+
+Error code: 400 BAD REQUEST
+
+Error message:
+```
+{
+    "error": "Email and password are required"
+}
+```
 
 ### Users Routes
 
