@@ -963,91 +963,298 @@ Input is also validated, for example invalid emails won't be accepted.
 
 * Methods: GET
 
-* Description:
+* Description: Route for retrieving a list of all wedding entries of all users
 
-* Request Parameters:
+* Request Parameters: None
 
-* Authentication:
+* Authentication: @jwt_required()
 
-* Authorisation:
+* Authorisation: Bearer token of admin only
 
-* Request Body:
+* Request Body: None
 
 * Request Response:
 
+Status code: 200 OK
+
+```
+[
+    {
+        "id": 1,
+        "date_of_wedding": "2023-11-30",
+        "user": {
+            "f_name": "admin",
+            "l_name": "admin"
+        },
+        "venue": {
+            "name": "Dalywaters Roses Garden and Chapel",
+            "city": {
+                "name": "Brookfield",
+                "state": {
+                    "name": "Queensland"
+                },
+                "postcode": 4069
+            }
+        }
+    },
+    {
+        "id": 2,
+        "date_of_wedding": "2024-05-12",
+        "user": {
+            "f_name": "Sally",
+            "l_name": "Smith"
+        },
+        "venue": {
+            "name": "Quamby Estate",
+            "city": {
+                "name": "Hagley",
+                "state": {
+                    "name": "Tasmania"
+                },
+                "postcode": 7292
+            }
+        }
+    },
+    {
+        "id": 3,
+        "date_of_wedding": "2025-01-02",
+        "user": {
+            "f_name": "Chris",
+            "l_name": "Lee"
+        },
+        "venue": {
+            "name": "Bundaleer Rainforest Gardens",
+            "city": {
+                "name": "Kingsford",
+                "state": {
+                    "name": "South Australia"
+                },
+                "postcode": 5118
+            }
+        }
+    }
+]
+```
+
 * Error Handling:
+
+Scenario: User isn't admin
+
+Error code: 401 UNAUTHOURIZED
+
+```
+{
+    "error": "401 Unauthorized: You must be an admin"
+}
+```
 
 #### 2. /weddings/\<int:wedding_id>
 
 * Methods: GET
 
-* Description:
+* Description: Route for retrieving the information of one wedding
 
-* Request Parameters:
+* Request Parameters: Wedding ID, integer
 
-* Authentication:
+* Authentication: @jwt_required
 
-* Authorisation:
+* Authorisation: Bearer token of admin or owner
 
-* Request Body:
+* Request Body: None
 
 * Request Response:
 
+Status code: 200 OK
+```
+{
+    "date_of_wedding": "2024-05-12",
+    "user": {
+        "f_name": "Sally",
+        "l_name": "Smith"
+    },
+    "venue": {
+        "name": "Quamby Estate",
+        "city": {
+            "name": "Hagley",
+            "state": {
+                "name": "Tasmania"
+            },
+            "postcode": 7292
+        }
+    }
+}
+```
+
 * Error Handling:
+
+Scenario: User isn't admin or owner
+
+Error code: 401 UNAUTHORIZED
+
+Error message:
+
+```
+{
+    "error": "401 Unauthorized: You must be an admin or user"
+}
+```
+
+Scenario: Wedding ID doesn't exist
+
+Error code: 404 NOT FOUND
+
+Error message:
+
+```
+{
+    "error": "Wedding entry not found"
+}
+```
 
 #### 3. /weddings
 
 * Methods: POST
 
-* Description:
+* Description: Creating a new wedding entry in the database
 
-* Request Parameters:
+* Request Parameters: None
 
-* Authentication:
+* Authentication: @jwt_required()
 
-* Authorisation:
+* Authorisation: Bearer token of user
 
 * Request Body:
 
+```
+{
+    "date_of_wedding":"2025-01-22",
+    "venue_id": 3
+}
+```
+
 * Request Response:
 
+Status Code 201 CREATED
+
+```
+{
+    "id": 4,
+    "date_of_wedding": "2025-01-22",
+    "user": {
+        "f_name": "Chris",
+        "l_name": "Lee"
+    },
+    "venue": {
+        "name": "Quamby Estate",
+        "city": {
+            "name": "Hagley",
+            "state": {
+                "name": "Tasmania"
+            },
+            "postcode": 7292
+        }
+    }
+}
+```
+
 * Error Handling:
+
+Scenario: Venue ID doesn't exist for location of wedding
+
+Error Code: 400 BAD REQUEST
+
+Error message:
+
+```
+{
+    "error": "Venue entered does not exist."
+}
+```
+
+Scenario: Invalid date entered
+
+Error code: 400 BAD REQUEST
+
+Error message:
+
+```
+{
+    "error": {
+        "date_of_wedding": [
+            "Not a valid date."
+        ]
+    }
+}
+```
 
 #### 4. /weddings/\<int:wedding_id>
 
 * Methods: PUT, PATCH
 
-* Description:
+* Description: Updating the date or venue of the wedding
 
-* Request Parameters:
+* Request Parameters: Wedding ID, integer
 
-* Authentication:
+* Authentication: @jwt_required
 
-* Authorisation:
+* Authorisation: Bearer token of admin or owner
 
 * Request Body:
 
+*Note that both date or venue ID can be modified, the venue ID is modified in this example
+
+```
+{
+    "venue_id": 1
+}
+```
+
 * Request Response:
 
+Status code: 200 OK
+
+```
+{
+    "id": 4,
+    "date_of_wedding": "2025-01-22",
+    "user": {
+        "f_name": "Chris",
+        "l_name": "Lee"
+    },
+    "venue": {
+        "name": "Bundaleer Rainforest Gardens",
+        "city": {
+            "name": "Kingsford",
+            "state": {
+                "name": "South Australia"
+            },
+            "postcode": 5118
+        }
+    }
+}
+```
+
 * Error Handling:
+
+Same error messages as the previous route for creating a new wedding, when the input for date or venue ID is invalid. Also the same error message as the route for retrieving one wedding, when the wedding ID doesn't exist.
 
 #### 5. /weddings/\<int:wedding_id>
 
 * Methods: DELETE
 
-* Description:
+* Description: Deleting a wedding entry from the database
 
-* Request Parameters:
+* Request Parameters: Wedding ID, integer
 
-* Authentication:
+* Authentication: @jwt_required()
 
-* Authorisation:
+* Authorisation: Bearer token of admin or owner
 
-* Request Body:
+* Request Body: None
 
-* Request Response:
+* Request Response: Status code 200 OK
 
-* Error Handling:
+* Error Handling: Same error message as the route for retrieving one wedding, when the wedding ID doesn't exist or when the user isn't admin, nor owner.
 
 ---
 

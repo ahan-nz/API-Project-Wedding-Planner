@@ -53,7 +53,7 @@ def create_wedding():
 
         return WeddingSchema(exclude=['venue_id']).dump(wedding), 201 # Venue id excluded as venue name will be returned anyway
     except IntegrityError: # Integrity error in a try except block, handles invalid venue id with a clear error message.
-        return {'error': 'Venue entered does not exist.'}, 404
+        return {'error': 'Venue entered does not exist.'}, 400
 
 
 # UPDATE: Modifying a wedding entry's information, with the id in the URL
@@ -73,7 +73,7 @@ def update_wedding(wedding_id):
         else:
             return {'error': 'Wedding entry not found'}, 404 # Handles error of invalid wedding id with a clear error message
     except IntegrityError: # Integrity error in a try except block, handles invalid venue id with a clear error message.
-        return {'error': 'Venue entered does not exist.'}, 404
+        return {'error': 'Venue entered does not exist.'}, 400
 
 
 # DELETE: This route allows the removal of a wedding entry by the admin or the 'owner'
