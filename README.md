@@ -1633,6 +1633,8 @@ These are tasks that I have completed and no longer need to revisit.
 
 The Trello board allowed me to grasp the big picture of my progress throughout this assignment and split my tasks into smaller jobs. THis is a screenshot of my board halfway through my project, as an example:
 
+![Trello Screenshot](./docs/trello.png)
+
 ---
 
 ### References
