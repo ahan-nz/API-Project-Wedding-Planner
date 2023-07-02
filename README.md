@@ -160,6 +160,34 @@ As I'm basing my application in Australia, I added states for Australian address
 
 ### R7 Detail any third party services that your app will use
 
+* SQLAlchemy
+
+SQLAlchemy is an open source ORM and SQL toolkit. It is used in the app to act as a bridge between high level Python programming language and the relational database. Python objects are mapped to database tables and Python code is encapsulated and translated into SQL in the background to query and manipulate data. SQLAlchemy is database agnostic and supports popular database systems including PosrtgreSQL, which is what this app uses, in addition to MySQL, SQLite, etc (TutorialsPoint, n.d.). 
+
+* Flask-Marshmallow
+
+This is an extension that integrates Marshmallow with a Flask app. Marshmallow is a library used in this app to serialise and deserialise complex objects into Python datatypes, such as JSON. It is also used to validate incoming data, ensuring data consistency and integrity. Moreover, it supports relationships between objects such as foreign key references and nested fields (Mwaura, 2021).
+
+* Marshmallow-SQLAlchemy
+
+This is an extension for Marshmallow that integrates it with SQLAlchemy. It allows for seamless serialisation and deserialisation of SQLAlchemy models and automatically generates Marshmallow schemas.
+
+* Psycopg2
+
+Psycopg2 is a popular database adapter designed for PostgreSQL. It is required as SQLAlchemy is a database agnostic ORM so it cannot interact with the database directly. Psycopg2 helps with making our code more reliable as it automatically does the conversion between Python objects and PostgreSQL datatypes (Psycopg, 2021).
+
+* Python-Dotenv
+
+Python-Dotenv is a library that assists in configuring environment variables, developers can keep configuration settings and secret keys in a separate file from the application code for better security. In this app, we have a .env file that stores the database connection stream and secret key. There is also a .flaskenv file with details such as the port (8000 in this case), debug mode and also where to run the app from (PyPI, 2023).
+
+* Flask-Bcrypt
+
+Bcrypt is a password hashing library for Python, Flask-Bcrypt is an extension of Flask that streamlines the process of encryption and verification of passwords. In this app, user passwords are hashed before being stored in the database. During verication, it checks whether the hashed user input matches the hashed password that is stored. A random salt value is included during the hashing process to add another layer of security. It is also designed to be computationally expensive and slow to make it resistant to brute-force attacks. This improves the security of our application and user data (GeeksforGeeks, 2023).
+
+* Flask-JWT-Extended
+
+This is a Flask extension that provides support for JWT authentication. It creates JSON web tokens with `create_access_token()`, and `jwt_required()` is used to protect routes from unauthorised access. The generated token, stored in a session in this app, is sent back to server in a header with any client requests to show authorisation, this also means users don't have to login with every request. This app also uses `get_jwt_identity()` to retrieve the identity of the JWT (Flask-JWT-Extended, n.d.). 
+
 ---
 
 ### R8 	Describe your projects models in terms of the relationships they have with each other
@@ -481,11 +509,22 @@ The Trello board allowed me to grasp the big picture of my progress throughout t
 
 * MongoDB. (2023). What Does ACID Compliance Mean? | An Introduction. [online] Available at: https://www.mongodb.com/databases/acid-compliance#:~:text=Well%2C%20ACID%20stands%20for%20atomicity.
 
-* Dhruv, S. (2019). Pros and Cons of using PostgreSQL for Application Development. [online] Aalpha. Available at: https://www.aalpha.net/blog/pros-and-cons-of-using-postgresql-for-application-development/.
+* Dhruv, S. (2019). Pros and Cons of using PostgreSQL for Application Development. [online] Aalpha. Available at: https://www.aalpha.net/blog/pros-and-cons-of-using-postgresql-for-application-development.
 
-* LinkedIn. (2023). What are the benefits and drawbacks of using ORM for complex queries and aggregations? [online] Available at: https://www.linkedin.com/advice/0/what-benefits-drawbacks-using-orm-complex-queries#:~:text=One%20of%20the%20main%20benefits/.
+* LinkedIn. (2023). What are the benefits and drawbacks of using ORM for complex queries and aggregations? [online] Available at: https://www.linkedin.com/advice/0/what-benefits-drawbacks-using-orm-complex-queries#:~:text=One%20of%20the%20main%20benefits.
 
-* Tuama, D.Ó. (2022). Object Relational Mapping: What is an ORM? [online] Code Institute Global. Available at: https://codeinstitute.net/global/blog/object-relational-mapping/.
+* Tuama, D.Ó. (2022). Object Relational Mapping: What is an ORM? [online] Code Institute Global. Available at: https://codeinstitute.net/global/blog/object-relational-mapping.
 
-* Abba, I.V. (2022). What is an ORM – The Meaning of Object Relational Mapping Database Tools. [online] freeCodeCamp.org. Available at: https://www.freecodecamp.org/news/what-is-an-orm-the-meaning-of-object-relational-mapping-database-tools/.
+* Abba, I.V. (2022). What is an ORM – The Meaning of Object Relational Mapping Database Tools. [online] freeCodeCamp.org. Available at: https://www.freecodecamp.org/news/what-is-an-orm-the-meaning-of-object-relational-mapping-database-tools.
 
+* TutorialsPoint. (n.d.). SQLAlchemy Tutorial. [online] Available at: https://www.tutorialspoint.com/sqlalchemy/index.html.
+
+* Mwaura. (2021). Object validation and conversion with Marshmallow in Python. [online] Available at: https://circleci.com/blog/object-validation-and-conversion-with-marshamallow.
+
+* Psycopg. (2021). Psycopg – PostgreSQL database adapter for Python — Psycopg 2.9.6 documentation. [online] Available at: https://www.psycopg.org/docs/index.html.
+
+* PyPI. (2023). python-dotenv. [online] Available at: https://pypi.org/project/python-dotenv/#getting-started.
+
+* GeeksforGeeks. (2023). Password Hashing with Bcrypt in Flask. [online] Available at: https://www.geeksforgeeks.org/password-hashing-with-bcrypt-in-flask.
+
+* Flask-JWT-Extended. (n.d.). Basic Usage — flask-jwt-extended 4.5.2 documentation. [online] Available at: https://flask-jwt-extended.readthedocs.io/en/stable/basic_usage.html.
